@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/Giovanni/Downloads/JARVIS-API.jar" sourcepath="/Users/Giovanni/Downloads/java-speech-api-2.02.zip"/>
+	<classpathentry kind="lib" path="/Users/Giovanni/Downloads/MpegAudioSPI1.9.5/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="/Users/Giovanni/Downloads/MpegAudioSPI1.9.5/lib/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Giovanni/Downloads/MpegAudioSPI1.9.5/lib/tritonus_share.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

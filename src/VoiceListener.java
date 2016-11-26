@@ -62,9 +62,11 @@ public class VoiceListener {
 			                
 			                if(response.getResponse()!=null) {
 			                	displayResponse(response);//Displays output in Console  
-			                	Synthesiser synth = new Synthesiser("es");		                
+			                	Synthesiser synth = new Synthesiser("it");		                
 			                	InputStream is = synth.getMP3Data(response.getResponse()); 
 			                	inputStreamToFile(is);
+			                	
+			                	Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
 			                	
 			                }
 			                
@@ -91,10 +93,14 @@ public class VoiceListener {
 			    System.out.println("Google Response: " + gr.getResponse());
 			    System.out.println("Google is " + Double.parseDouble(gr.getConfidence())*100 + "% confident in"
 			            + " the reply");
+			    
+			    // Print alternative responses
+			    /* 
 			    System.out.println("Other Possible responses are: ");
 			    for(String s: gr.getOtherPossibleResponses()){
 			        System.out.println("\t" + s);
 			    }
+			    */
 		    }  
 		};
 
