@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -24,7 +25,9 @@ public class VoiceListener {
 
 	private static VoiceListener instance = null;
 	
-	private final int NOISE_THRESHOLD = 8; 
+	private final int NOISE_THRESHOLD = 20;
+
+	private PrintStream write; 
 	
 	
 	
@@ -67,7 +70,7 @@ public class VoiceListener {
 			                	inputStreamToFile(is);
 			                	
 			                	Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
-			                	
+			                	writeLog(response);
 			                }
 			                
 			                
@@ -76,7 +79,6 @@ public class VoiceListener {
 			                // TODO Auto-generated catch block
 			                e.printStackTrace();
 			                System.out.println("Error Occured");
-			                System.out.println("test");
 			            }
 			            finally{
 			                mic.close();//Makes sure microphone closes on exit.
@@ -149,6 +151,22 @@ public class VoiceListener {
 
 			}
 		}
+	}
+	
+	private void writeLog(GoogleResponse res){
+		try
+	     {
+	          FileOutputStream log = new FileOutputStream("res/conversLog.txt");
+	          write = new PrintStream(log);
+	          write.println(res.getResponse());
+	          System.out.println("Log created.");
+	      }
+	      catch (IOException e)
+	      {
+	          System.out.println("Error: " + e);
+	          System.exit(1);
+	      }
+		
 	}
 	
 }
