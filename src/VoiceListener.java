@@ -76,6 +76,7 @@ public class VoiceListener {
 			                // TODO Auto-generated catch block
 			                e.printStackTrace();
 			                System.out.println("Error Occured");
+			                System.out.println("test");
 			            }
 			            finally{
 			                mic.close();//Makes sure microphone closes on exit.
