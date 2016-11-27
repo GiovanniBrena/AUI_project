@@ -5,12 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
 import com.darkprograms.speech.recognizer.GoogleResponse;
 import com.darkprograms.speech.recognizer.Recognizer;
@@ -26,6 +20,12 @@ public class VoiceListener {
 	private static VoiceListener instance = null;
 	
 	private final int NOISE_THRESHOLD = 20;
+	public enum Mode {
+	    REPEATER, CONVERSATION
+	}
+	private Mode mode = Mode.REPEATER;
+	
+	private Thread listeningThread;
 
 	private PrintStream write; 
 	
@@ -36,12 +36,28 @@ public class VoiceListener {
 		return instance;
 	}
 	
-	
+	public void setMode(Mode m) {mode = m;}
 	
 	public void startListening(){
 		
-		Thread listeningThread = new Thread() {
+		listeningThread = new Thread() {
 		    public void run() {
+		    	
+		    	if(mode==Mode.CONVERSATION) {
+		    		String helloString = Conversation.initConversation();
+		    		App.print("ABI: " + helloString);
+		    		Synthesiser synth = new Synthesiser("it");		                
+            		InputStream is=null;
+					try {
+						is = synth.getMP3Data(helloString);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+            		inputStreamToFile(is, "res/conv.mp3");
+            		Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
+		    	}
+		    	
 		    	MicrophoneAnalyzer mic = new MicrophoneAnalyzer(FLACFileWriter.FLAC);
 			    mic.setAudioFile(new File("AudioTestNow.flac"));
 			    System.out.println("ACTIVATING MICROPHONE");
@@ -63,15 +79,34 @@ public class VoiceListener {
 			                Recognizer rec = new Recognizer(Recognizer.Languages.ITALIAN, Constants.GOOGLE_API_KEY);
 			                GoogleResponse response = rec.getRecognizedDataForFlac(mic.getAudioFile(), 3);
 			                
-			                if(response.getResponse()!=null) {
-			                	displayResponse(response);//Displays output in Console  
-			                	Synthesiser synth = new Synthesiser("it");		                
-			                	InputStream is = synth.getMP3Data(response.getResponse()); 
-			                	inputStreamToFile(is);
+			                displayResponse(response);//Displays output in Console
+		                	App.print("User: " + response.getResponse());
+		                	writeLog(response);
+		                	
+		                	if(mode==Mode.REPEATER) {
+		                		Synthesiser synth = new Synthesiser("it");		                
+		                		InputStream is = synth.getMP3Data(response.getResponse()); 
+		                		inputStreamToFile(is, "res/rec.mp3");
+		                		Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
+		                	}
+		                	
+		                	else if (mode==Mode.CONVERSATION) {
 			                	
-			                	Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
-			                	writeLog(response);
-			                }
+			                	String ABIresponse = Conversation.sendRequest(response.getResponse());
+			                	App.print("ABI: " + ABIresponse);
+			                	
+		    		    		Synthesiser synth = new Synthesiser("it");		                
+		                		InputStream is=null;
+		    					try {
+		    						is = synth.getMP3Data(ABIresponse);
+		    					} catch (IOException e) {
+		    						// TODO Auto-generated catch block
+		    						e.printStackTrace();
+		    					} 
+		                		inputStreamToFile(is, "res/conv.mp3");
+		                		Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
+		                	}
+
 			                
 			                
 			                System.out.println("Looping back");//Restarts loops
@@ -111,7 +146,13 @@ public class VoiceListener {
 	}   
 	
 	
-	private void inputStreamToFile(InputStream is) {
+	public void stopListening(){
+		if(listeningThread!=null) {listeningThread.stop();}
+	}
+	
+	
+	
+	private void inputStreamToFile(InputStream is, String path) {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 
@@ -121,7 +162,7 @@ public class VoiceListener {
 
 			// write the inputStream to a FileOutputStream
 			outputStream =
-	                    new FileOutputStream(new File("res/rec.mp3"));
+	                    new FileOutputStream(new File(path));
 
 			int read = 0;
 			byte[] bytes = new byte[1024];
