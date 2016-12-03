@@ -1,25 +1,56 @@
-package TestServer;
+package client;
 
 import java.io.*;
 import java.net.*;
 
-public class Client {
+import com.darkprograms.speech.synthesiser.Synthesiser;
 
-	  String serverurl = "192.168.1.166";
-	  int serverport = 8189;
+public class TestClient {
+	
+	private Thread connectionThread;
+
+	public String serverurl = "192.168.1.166";
+	public int serverport = 8189;
+	private static PrintWriter printwriter;
+	private static TestClient instance; 
+	  
+	  public static TestClient getInstance(){
+		  if(instance==null) { instance = new TestClient();}
+		  return instance;
+	  }
+	  
+	  private TestClient(){}
+	  
+	  
+	  @SuppressWarnings("restriction")
+	public void startClient(){
+		  serverurl = App.ipField.getText();
+		  serverport = Integer.parseInt(App.portField.getText());
+			connectionThread = new Thread() {
+			    public void run() {
+			    	init();
+			    }
+			};
+			connectionThread.start();
+		}
+		
+		public void stopClient(){
+			if(connectionThread!=null) {connectionThread.stop();}
+		}
+	  
 	 
 	  /**  Instantiates an instance of the SimpleClient class and initilaizes it.
-	  */
+	  
 	  public static void main(String[] args){
-	    Client simpleclient = new Client();
-	    simpleclient.init();
+	    TestClient client = new TestClient();
+	    client.init();
 	  }
 	 
 	  /**  Connects to the SimpleServer on port 8189 and sends a few demo lines
 	  *  to the server, and reads, displays the server reply,
 	  *  then issues a Bye command signaling the server to quit.
 	  */
-	  public void init(){
+	  private void init(){
 	    Socket socket = null;    
 	    try{
 	      System.out.println("Connecting to " + serverurl + " on port " + serverport);
@@ -33,13 +64,20 @@ public class Client {
 	      BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
 	      //establish an printwriter using the output streamof the socket object
 	      //and set auto flush on    
-	      PrintWriter printwriter = new PrintWriter(socket.getOutputStream(),true);
+	      printwriter = new PrintWriter(socket.getOutputStream(),true);
 	      printwriter.println("I'm a client!");
 
 	      //printwriter.println("Bye");
 	      String lineread = "";
 	      while ((lineread = bufferedreader.readLine()) != null){
 	        System.out.println("Received from Server: " + lineread);
+	        
+	        App.print("ABI: " + lineread);
+	        Synthesiser synth = new Synthesiser("it");		                
+			InputStream is = synth.getMP3Data(lineread); 
+			VoiceListener.inputStreamToFile(is, "res/rec.mp3");
+			Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
+	        
 	      }
 	      System.out.println("Closing connection.");
 	      bufferedreader.close();
@@ -50,10 +88,13 @@ public class Client {
 	 
 	    }catch(UnknownHostException unhe){
 	      System.out.println("UnknownHostException: " + unhe.getMessage());
+	      App.print("ABI Server error.");
 	    }catch(InterruptedIOException intioe){
 	      System.out.println("Timeout while attempting to establish socket connection.");
+	      App.print("Connection timeout.");
 	    }catch(IOException ioe){
 	      System.out.println("IOException: " + ioe.getMessage());
+	      App.print("ABI Server not available.");
 	    }finally{
 	      try{
 	        socket.close();
@@ -62,4 +103,12 @@ public class Client {
 	      }
 	    }
 	  }
+	  
+	  
+	  public void sendToServer(String text) {
+		  if(printwriter==null) {return;}
+		  printwriter.println(text);
+	  }
+	  
+	  
 	}

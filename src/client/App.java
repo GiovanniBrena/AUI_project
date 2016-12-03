@@ -1,3 +1,4 @@
+package client;
 
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
@@ -17,6 +18,8 @@ public class App extends Application {
 	
 	boolean isActive = false; 
 	static TextArea console;
+	static TextField ipField;
+	static TextField portField;
 
 	public static void main(String[] args) {
 	launch(args);
@@ -55,13 +58,28 @@ public class App extends Application {
     rb1.setSelected(true);
     RadioButton rb2 = new RadioButton("Conversation");
     rb2.setToggleGroup(group);
+    RadioButton rb3 = new RadioButton("Manual");
+    rb3.setToggleGroup(group);
     
     group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
         public void changed(ObservableValue<? extends Toggle> ov,
             Toggle old_toggle, Toggle new_toggle) {
           if (group.getSelectedToggle() != null) {
-            if(group.getSelectedToggle()==rb1) { VoiceListener.getInstance().setMode(VoiceListener.Mode.REPEATER);}
-            else if(group.getSelectedToggle()==rb2) { VoiceListener.getInstance().setMode(VoiceListener.Mode.CONVERSATION);}
+            if(group.getSelectedToggle()==rb1) { 
+            	VoiceListener.getInstance().setMode(VoiceListener.Mode.REPEATER);
+            	ipField.setDisable(true);
+                portField.setDisable(true);
+            }
+            else if(group.getSelectedToggle()==rb2) { 
+            	VoiceListener.getInstance().setMode(VoiceListener.Mode.CONVERSATION);
+            	ipField.setDisable(true);
+                portField.setDisable(true);
+            }
+            else if(group.getSelectedToggle()==rb3) { 
+            	VoiceListener.getInstance().setMode(VoiceListener.Mode.MANUAL);
+            	ipField.setDisable(false);
+                portField.setDisable(false);
+            }
           }
         }
       });
@@ -70,6 +88,7 @@ public class App extends Application {
     vbox.getChildren().add(title);
     vbox.getChildren().add(rb1);
     vbox.getChildren().add(rb2);
+    vbox.getChildren().add(rb3);
     
     BorderPane.setAlignment(vbox, Pos.CENTER_LEFT);
     //BorderPane.setMargin(list, new Insets(12,12,12,12));
@@ -106,6 +125,7 @@ public class App extends Application {
     Text title2 = new Text("CONSOLE");
     console = new TextArea();
     console.setEditable(false);
+    console.setPrefHeight(300);
     console.textProperty().addListener(new ChangeListener<Object>() {
         @Override
         public void changed(ObservableValue<?> observable, Object oldValue,
@@ -125,13 +145,33 @@ public class App extends Application {
     vbox2.getChildren().add(console);
     vbox2.getChildren().add(clearConsole);
     
+    VBox topHBox = new VBox();
+    topHBox.setPadding(new Insets(10));
+    topHBox.setSpacing(8);
+    
+    Text serverLabel = new Text("Server IP");
+    Text portLabel = new Text("port");
+    ipField = new TextField ();
+    portField = new TextField ();
+    ipField.setText(TestClient.getInstance().serverurl);
+    portField.setText(String.valueOf(TestClient.getInstance().serverport));
+    
+    ipField.setDisable(true);
+    portField.setDisable(true);
+    
+    topHBox.getChildren().add(serverLabel);
+    topHBox.getChildren().add(ipField);
+    topHBox.getChildren().add(portLabel);
+    topHBox.getChildren().add(portField);
+    
+    componentLayout.setRight(topHBox);
     componentLayout.setLeft(vbox);
     componentLayout.setCenter(vbox2);
     componentLayout.setBottom(startListening);
     
     
 	//Add the BorderPane to the Scene
-	Scene appScene = new Scene(componentLayout,800,500);
+	Scene appScene = new Scene(componentLayout,1000,500);
 
 	//Add the Scene to the Stage
 	primaryStage.setScene(appScene);

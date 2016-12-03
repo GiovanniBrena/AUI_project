@@ -1,4 +1,4 @@
-package TestServer;
+package testServer;
 
 import java.io.*;
 import java.net.*;
@@ -103,8 +103,7 @@ public class Server extends Application {
 	      printwriter = new PrintWriter(socket.getOutputStream(),true);
 	 
 	      String datetimestring = (Calendar.getInstance()).getTime().toString();
-	      printwriter.println("You connected to the ABI Server at " + datetimestring);
-	      printwriter.println("Send Bye to disconnect.");
+	      printwriter.println("Benvenuto in ABI modalità manuale.");
 	      
 	      hasClient=true;
 	      drawStateIcon();
@@ -231,6 +230,7 @@ public class Server extends Application {
 		    vbox2.getChildren().add(sendButton);
 		    
 		    vbox2.setAlignment(Pos.TOP_RIGHT);
+		  
 		    
 		    componentLayout.setLeft(vbox);
 		    componentLayout.setCenter(vbox2);

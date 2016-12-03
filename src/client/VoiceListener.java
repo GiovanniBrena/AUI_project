@@ -1,3 +1,4 @@
+package client;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import com.darkprograms.speech.recognizer.Recognizer;
 import com.darkprograms.speech.synthesiser.Synthesiser;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
 
-
+import client.TestClient;
 
 
 @SuppressWarnings("restriction")
@@ -21,7 +22,7 @@ public class VoiceListener {
 	
 	private final int NOISE_THRESHOLD = 20;
 	public enum Mode {
-	    REPEATER, CONVERSATION
+	    REPEATER, CONVERSATION, MANUAL
 	}
 	private Mode mode = Mode.REPEATER;
 	
@@ -58,6 +59,10 @@ public class VoiceListener {
             		Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
 		    	}
 		    	
+		    	else if(mode==Mode.MANUAL) {
+		    		TestClient.getInstance().startClient();
+		    	}
+		    	
 		    	MicrophoneAnalyzer mic = new MicrophoneAnalyzer(FLACFileWriter.FLAC);
 			    mic.setAudioFile(new File("AudioTestNow.flac"));
 			    System.out.println("ACTIVATING MICROPHONE");
@@ -79,34 +84,42 @@ public class VoiceListener {
 			                Recognizer rec = new Recognizer(Recognizer.Languages.ITALIAN, Constants.GOOGLE_API_KEY);
 			                GoogleResponse response = rec.getRecognizedDataForFlac(mic.getAudioFile(), 3);
 			                
-			                displayResponse(response);//Displays output in Console
-		                	App.print("User: " + response.getResponse());
-		                	writeLog(response);
-		                	
-		                	if(mode==Mode.REPEATER) {
-		                		Synthesiser synth = new Synthesiser("it");		                
-		                		InputStream is = synth.getMP3Data(response.getResponse()); 
-		                		inputStreamToFile(is, "res/rec.mp3");
-		                		Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
-		                	}
-		                	
-		                	else if (mode==Mode.CONVERSATION) {
+			                
+			                // got a valid audio recognition
+			                if(response.getResponse()!=null) {
 			                	
-			                	String ABIresponse = Conversation.sendRequest(response.getResponse());
-			                	App.print("ABI: " + ABIresponse);
+			                	displayResponse(response);//Displays output in Console
+		                		App.print("User: " + response.getResponse());
+		                		writeLog(response);
+		                	
+		                		if(mode==Mode.REPEATER) {
+		                			Synthesiser synth = new Synthesiser("it");		                
+		                			InputStream is = synth.getMP3Data(response.getResponse()); 
+		                			inputStreamToFile(is, "res/rec.mp3");
+		                			Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
+		                		}
+		                	
+		                		else if (mode==Mode.CONVERSATION) {
 			                	
-		    		    		Synthesiser synth = new Synthesiser("it");		                
-		                		InputStream is=null;
-		    					try {
-		    						is = synth.getMP3Data(ABIresponse);
-		    					} catch (IOException e) {
-		    						// TODO Auto-generated catch block
-		    						e.printStackTrace();
-		    					} 
-		                		inputStreamToFile(is, "res/conv.mp3");
-		                		Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
-		                	}
-
+			                		String ABIresponse = Conversation.sendRequest(response.getResponse());
+			                		App.print("ABI: " + ABIresponse);
+			                	
+		    		    			Synthesiser synth = new Synthesiser("it");		                
+		                			InputStream is=null;
+		    						try {
+		    							is = synth.getMP3Data(ABIresponse);
+		    						} catch (IOException e) {
+		    							// TODO Auto-generated catch block
+		    							e.printStackTrace();
+		    						} 
+		                			inputStreamToFile(is, "res/conv.mp3");
+		                			Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
+		                		}
+		                		
+		                		else if (mode==Mode.MANUAL) {
+		                			TestClient.getInstance().sendToServer(response.getResponse());
+		                		}
+			                }
 			                
 			                
 			                System.out.println("Looping back");//Restarts loops
@@ -152,7 +165,7 @@ public class VoiceListener {
 	
 	
 	
-	private void inputStreamToFile(InputStream is, String path) {
+	public static void inputStreamToFile(InputStream is, String path) {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 
