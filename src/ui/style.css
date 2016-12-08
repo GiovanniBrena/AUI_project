@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#block {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: aquamarine;
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+#block svg {
+    padding: 50px;
+}
