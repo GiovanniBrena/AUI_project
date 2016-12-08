@@ -6,4 +6,7 @@ public class Constants {
 	public static final String WATSON_CONVERSATION_USER = "5802c4e6-4cb2-4f77-8c82-8a871d2dfed4";
 	public static final String WATSON_CONVERSATION_PSW = "DQHjonP83BRt";
 	public static final String WATSON_WORKSPACE_ID = "a63e63f6-14a2-4bee-ba20-c039aa3955a3";
+	
+	public static final String WATSON_TRANSLATOR_USER = "afaa0bda-d8e6-4748-a524-a65c91aacc46";
+	public static final String WATSON_TRANSLATOR_PSW = "VhaWlvynTHqL";
 	}
