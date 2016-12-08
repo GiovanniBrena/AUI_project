@@ -48,6 +48,7 @@ public class guiAlchemy extends Application {
 	static TextArea keywordArea;
 	
 	static TextArea[] alchemyTextAreas={sentimentArea,emotionArea,typerRelArea,conceptArea,entitiesArea,keywordArea};
+	private String[] alchemyTextAreasTitle={"sentiment","emotion","typerRel","concept","entities","keywords"};
 	
 	
 	static Canvas stateCanvas;
@@ -85,7 +86,7 @@ public class guiAlchemy extends Application {
       //Add something in Tab
         ArrayList<Tab> alchemyTabs=new ArrayList<>();
         for (int i = 0; i < alchemyTextAreas.length; i++) {
-        	Tab tab=new Tab("alchemy"+(i+0));
+        	Tab tab=new Tab(alchemyTextAreasTitle[i]);
         	alchemyTextAreas[i]=new TextArea();
         	tab.setContent(alchemyTextAreas[i]);
         	tabPane.getTabs().add(tab);
@@ -173,7 +174,7 @@ public class guiAlchemy extends Application {
 		if(f==null)System.out.println("frase nulla");
 		for (int i = 0; i < alchemyTextAreas.length; i++) {
 		
-			 alchemyTextAreas[i].setText(f.getEmotion().toString());
+			 alchemyTextAreas[i].setText(f.getDati(i).toString());
 			
 		}
 		

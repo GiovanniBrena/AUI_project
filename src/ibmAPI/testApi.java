@@ -59,6 +59,9 @@ public  class testApi  {
 		Frase temp=Alchemy.sendRequestReturnFrase(inputENG);
 		System.out.println("frase ritornata"+temp);
 		temp.setFraseOriginale(input);
+		
+		
+		
 		guiAlchemy.printInfoConversation(conversation);
 		guiAlchemy.printAlchemyData(temp);
 		

@@ -89,7 +89,7 @@ public class Alchemy {
 		Keywords keyWordAlchemy = service.getKeywords(params).execute();
 
 		DocumentEmotion emotion = service.getEmotion(params).execute();
-
+/*
 		System.out.println("Sentiment \n:" + sentiment + "\n*************************");
 		System.out.println("Data \n:" + data + "\n*************************");
 		
@@ -101,12 +101,12 @@ public class Alchemy {
 
 		System.out.println("Entities \n:" + entitiesAlchemy + "\n*************************");
 		System.out.println("Keywords \n:" + keyWordAlchemy + "\n*************************");
-
+*/
 		JSONObject sen = new JSONObject(sentiment);
 	
 		JSONObject docSent = sen.getJSONObject("sentiment");
 		Instant instant=Instant.now();
-		Frase frase=new Frase(input,input,java.util.Date.from(instant),sentiment,relations,typedRelation,conceptAlchemy,entitiesAlchemy,keyWordAlchemy,emotion);
+		Frase frase=new Frase(input,input,java.util.Date.from(instant),sentiment,emotion,typedRelation,conceptAlchemy,entitiesAlchemy,keyWordAlchemy);
 		
 		return frase;
 	}

@@ -20,39 +20,52 @@ public class Frase {
 	private Date data;
 
 	DocumentSentiment sentiment;
-	SAORelations relations;
+	DocumentEmotion emotion;
 	TypedRelations typedRelation;
 	Concepts conceptAlchemy;
 	Entities entitiesAlchemy;
 	Keywords keyWordAlchemy;
-	DocumentEmotion emotion;
 	
-	private AlchemyLanguageGenericModel[] dati={sentiment,relations,typedRelation,conceptAlchemy,entitiesAlchemy,keyWordAlchemy,emotion};
+	
+	private AlchemyLanguageGenericModel[] datiAlchemy={sentiment,emotion,typedRelation,conceptAlchemy,entitiesAlchemy,keyWordAlchemy};
 	
 	public Frase(String fraseOriginale, String fraseTradotta, Date data, DocumentSentiment sentiment,
-			SAORelations relations, TypedRelations typedRelation, Concepts conceptAlchemy, Entities entitiesAlchemy,
-			Keywords keyWordAlchemy, DocumentEmotion emotion) {
+			DocumentEmotion emotion, TypedRelations typedRelation, Concepts conceptAlchemy, Entities entitiesAlchemy,
+			Keywords keyWordAlchemy) {
 		super();
 		this.fraseOriginale = fraseOriginale;
 		this.fraseTradotta = fraseTradotta;
 		this.data = data;
 		this.sentiment = sentiment;
-		this.relations = relations;
+		
 		this.typedRelation = typedRelation;
 		this.conceptAlchemy = conceptAlchemy;
 		this.entitiesAlchemy = entitiesAlchemy;
 		this.keyWordAlchemy = keyWordAlchemy;
 		this.emotion = emotion;
+		this.datiAlchemy=new AlchemyLanguageGenericModel[7];
+		this.datiAlchemy[0]= sentiment;
+		this.datiAlchemy[1] = emotion;
+		this.datiAlchemy[2]= typedRelation;
+		this.datiAlchemy[3] = conceptAlchemy;
+		this.datiAlchemy[4] = entitiesAlchemy;
+		this.datiAlchemy[5] = keyWordAlchemy;
+		
 		
 	}
 	public String getFraseOriginale() {
 		return fraseOriginale;
 	}
 	public AlchemyLanguageGenericModel[] getDati() {
-		return dati;
+		return datiAlchemy;
 	}
+	
+	public AlchemyLanguageGenericModel getDati(int index) {
+		return datiAlchemy[index];
+	}
+	
 	public void setDati(AlchemyLanguageGenericModel[] dati) {
-		this.dati = dati;
+		this.datiAlchemy = dati;
 	}
 	public void setFraseOriginale(String fraseOriginale) {
 		this.fraseOriginale = fraseOriginale;
@@ -76,12 +89,7 @@ public class Frase {
 	public void setSentiment(DocumentSentiment sentiment) {
 		this.sentiment = sentiment;
 	}
-	public SAORelations getRelations() {
-		return relations;
-	}
-	public void setRelations(SAORelations relations) {
-		this.relations = relations;
-	}
+
 	public TypedRelations getTypedRelation() {
 		return typedRelation;
 	}
