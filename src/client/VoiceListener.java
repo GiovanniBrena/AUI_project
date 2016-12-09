@@ -31,7 +31,7 @@ public class VoiceListener {
 
 	private PrintStream write; 
 	
-	private DBManager db;
+	private static DBManager db;
 	
 	
 	
@@ -48,6 +48,7 @@ public class VoiceListener {
 		    public void run() {
 		    	
 		    	db = new DBManager();
+		    	db.newDbConvers();
 		    	
 		    	if(mode==Mode.CONVERSATION) {
 		    		String helloString = Conversation.initConversation();
@@ -94,6 +95,7 @@ public class VoiceListener {
 			                // got a valid audio recognition
 			                if(response.getResponse()!=null) {
 			                	db.postPhrase(response.getResponse(), "Elderly");
+			                	
 			                	displayResponse(response);//Displays output in Console
 		                		App.print("User: " + response.getResponse());
 		                		writeLog(response);
@@ -167,7 +169,9 @@ public class VoiceListener {
 	
 	
 	public void stopListening(){
-		if(listeningThread!=null) {listeningThread.stop();}
+		if(listeningThread!=null) {listeningThread.stop();
+		db.updateOraFine();
+		}
 	}
 	
 	
@@ -197,6 +201,7 @@ public class VoiceListener {
 		} finally {
 			if (inputStream != null) {
 				try {
+					db.updateOraFine();
 					inputStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -205,7 +210,9 @@ public class VoiceListener {
 			if (outputStream != null) {
 				try {
 					// outputStream.flush();
+					db.updateOraFine();
 					outputStream.close();
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
