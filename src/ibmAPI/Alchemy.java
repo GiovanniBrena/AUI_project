@@ -2,7 +2,6 @@ package ibmAPI;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -40,13 +39,11 @@ public class Alchemy {
 		Concepts conceptAlchemy = service.getConcepts(params).execute();
 		Entities entitiesAlchemy = service.getEntities(params).execute();
 		Keywords keyWordAlchemy = service.getKeywords(params).execute();
-		CombinedResults combined=service.getCombinedResults(params).execute();
 
 		DocumentEmotion emotion = service.getEmotion(params).execute();
 
 		System.out.println("Sentiment \n:" + sentiment + "\n*************************");
 		System.out.println("Data \n:" + data + "\n*************************");
-		System.out.println("Combined \n:" + combined + "\n*************************");
 		
 		System.out.println("Emotion \n:" + emotion.getEmotion() + "\n*************************");
 		
@@ -86,14 +83,28 @@ public class Alchemy {
 		DocumentSentiment sentiment = service.getSentiment(params).execute();
 		SAORelations relations = service.getRelations(params).execute();
 		Dates data=service.getDates(params).execute();
-		List<TypedRelation> typedRelation = service.getTypedRelations(params).execute().getTypedRelations();
-		List<Concept> conceptAlchemy = service.getConcepts(params).execute().getConcepts();
-		List<Entity> entitiesAlchemy = service.getEntities(params).execute().getEntities();
-		List<Keyword> keyWordAlchemy = service.getKeywords(params).execute().getKeywords();
+		TypedRelations typedRelation = service.getTypedRelations(params).execute();
+		Concepts conceptAlchemy = service.getConcepts(params).execute();
+		Entities entitiesAlchemy = service.getEntities(params).execute();
+		Keywords keyWordAlchemy = service.getKeywords(params).execute();
 
-		
 		DocumentEmotion emotion = service.getEmotion(params).execute();
+/*
+		System.out.println("Sentiment \n:" + sentiment + "\n*************************");
+		System.out.println("Data \n:" + data + "\n*************************");
 		
+		System.out.println("Emotion \n:" + emotion.getEmotion() + "\n*************************");
+		
+		System.out.println("Relation \n:" + relations + "\n*************************");
+		System.out.println("TypedRelation \n:" + typedRelation + "\n*************************");
+		System.out.println("Concept \n:" + conceptAlchemy + "\n*************************");
+
+		System.out.println("Entities \n:" + entitiesAlchemy + "\n*************************");
+		System.out.println("Keywords \n:" + keyWordAlchemy + "\n*************************");
+*/
+		JSONObject sen = new JSONObject(sentiment);
+	
+		JSONObject docSent = sen.getJSONObject("sentiment");
 		Instant instant=Instant.now();
 		Frase frase=new Frase(input,input,java.util.Date.from(instant),sentiment,emotion,typedRelation,conceptAlchemy,entitiesAlchemy,keyWordAlchemy);
 		

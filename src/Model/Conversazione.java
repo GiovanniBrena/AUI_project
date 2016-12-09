@@ -46,18 +46,5 @@ public class Conversazione {
 	public void setDataFine(Date dataFine) {
 		this.dataFine = dataFine;
 	}
-	
-	
-	public String toString(){
-		String dataInizio="Data inizio: "+this.getDataInizio();
-		String dataFine="Data fine: "+this.getDataFine();
-		String numeroDiFrasi="numero di frasi: "+this.getFrasi().size();
-		String result=dataFine+"\n"+dataFine+"\n"+numeroDiFrasi;
-		return result;
-		
-		
-		
-		
-	}
 
 }
