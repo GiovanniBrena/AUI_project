@@ -1,0 +1,220 @@
+html,body {
+    margin:0;
+    padding:0;
+    height: 80%;
+    background: #000000;
+    font: normal 10px/1.1em arial;
+    background: #f6f6f6;
+}
+.body {
+    width:100%;
+    height: 100%;
+    margin: 60px auto 0;
+    position:relative;
+}
+.eyes {
+    background: #f7efef;
+    position: absolute;
+    height:100%;
+    width: 100%;
+
+}
+.eye.eyeNormal {
+    position:relative;
+    z-index:2;
+    float:left;
+
+    margin-left:10%;
+    margin-right: 10%;
+    height: 70%;
+    width: 20%;
+
+    background: #f4f0f0;
+    border:2px solid #000;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-transform: translatez(0);
+    -moz-transform: translatez(0);
+    -ms-transform: translatez(0);
+    -o-transform: translatez(0);
+    transform: translatez(0);
+    /* animation */
+    -webkit-animation: eyes 4s infinite step-start 0s;
+    -moz-animation: eyes 4s infinite step-start 0s;
+    -o-animation: eyes 4s infinite step-start 0s;
+    -ms-animation: eyes 4s infinite step-start 0s;
+    animation: eyes 4s infinite step-start 0s;
+}
+
+
+
+
+.eye.eyeHappy{
+    margin-top:100px;
+    background: transparent;
+    width: 40%;
+    height: 100%;
+    padding-left: 5%;
+
+    position: relateive;
+    float:left;
+    border: 8px solid;
+    border-color: #000 transparent transparent transparent;
+    border-radius: 100%;
+}
+.eye:last-child {
+    float:right;
+    box-shadow: inset -5px -5px 0 2px rgba(0,0,0,.05);
+}
+.iris {
+    content: "";
+    display: block;
+    width:25px;
+    height:25px;
+    background:#000;
+    position:absolute;
+    z-index:3;
+    top:50%;
+    left:48%;
+    margin: -7px auto 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-transform: translatez(0);
+    -moz-transform: translatez(0);
+    -ms-transform: translatez(0);
+    -o-transform: translatez(0);
+    transform: translatez(0);
+    /* animation */
+    -webkit-animation: iris 4s infinite step-start 0s;
+    -moz-animation: iris 4s infinite step-start 0s;
+    -o-animation: iris 4s infinite step-start 0s;
+    -ms-animation: iris 4s infinite step-start 0s;
+    animation: iris 4s infinite step-start 0s;
+}
+
+/* animation */
+/* eyes */
+@-webkit-keyframes eyes {
+   0%, 100% {
+
+    border-top: none;
+    -webkit-border-radius: 40% 40% 50% 50%;
+    -moz-border-radius: 40% 40% 50% 50%;
+    border-radius: 40% 40% 50% 50%;
+   }
+   15%, 95% {
+    background:#fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border:2px solid #000;
+   }
+}
+@-moz-keyframes eyes {
+   0%, 100% {
+
+    border-top: none;
+    -webkit-border-radius: 40% 40% 50% 50%;
+    -moz-border-radius: 40% 40% 50% 50%;
+    border-radius: 40% 40% 50% 50%;
+   }
+   15%, 95% {
+    background:#fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border:2px solid #000;
+   }
+}
+@-o-keyframes eyes {
+   0%, 100% {
+
+    border-top: none;
+    -webkit-border-radius: 40% 40% 50% 50%;
+    -moz-border-radius: 40% 40% 50% 50%;
+    border-radius: 40% 40% 50% 50%;
+   }
+   15%, 95% {
+    background:#fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border:2px solid #000;
+   }
+}
+@-ms-keyframes eyes {
+   0%, 100% {
+
+    border-top: none;
+    -webkit-border-radius: 40% 40% 50% 50%;
+    -moz-border-radius: 40% 40% 50% 50%;
+    border-radius: 40% 40% 50% 50%;
+   }
+   15%, 95% {
+    background:#fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border:2px solid #000;
+   }
+}
+@keyframes eyes {
+   0%, 100% {
+    background:#f0e0e2;
+    border-top: none;
+    -webkit-border-radius: 40% 40% 50% 50%;
+    -moz-border-radius: 40% 40% 50% 50%;
+    border-radius: 40% 40% 50% 50%;
+   }
+   15%, 95% {
+    background:#fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border:2px solid #000;
+   }
+}
+
+/* iris */
+@-webkit-keyframes iris {
+    0%, 100% {
+        opacity: 0;
+    }
+    15%, 95% {
+        opacity: 1;
+    }
+}
+@-moz-keyframes iris {
+    0%, 100% {
+        opacity: 0;
+    }
+    15%, 95% {
+        opacity: 1;
+    }
+}
+@-o-keyframes iris {
+    0%, 100% {
+        opacity: 0;
+    }
+    15%, 95% {
+        opacity: 1;
+    }
+}
+@-ms-keyframes iris {
+    0%, 100% {
+        opacity: 0;
+    }
+    15%, 95% {
+        opacity: 1;
+    }
+}
+@keyframes iris {
+    0%, 100% {
+        opacity: 0;
+    }
+    15%, 95% {
+        opacity: 1;
+    }
+}
