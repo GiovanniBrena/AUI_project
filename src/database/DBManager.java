@@ -2,15 +2,17 @@ package database;
 
 import java.sql.*;
 
+import client.Constants;
+
 public class DBManager {
 
 	private Connection con;
 	private Statement st;
 	private ResultSet rs;
-	private String driver = "com.mysql.jdbc.Driver";
-	private String url = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/ad_85f9c5363d162e8";
-	private String username = "b0179319c7b2ef";
-	private String password = "d319ebe7";
+	private String driver = Constants.DATABASE_DRIVER;
+	private String url = Constants.DATABASE_URL;
+	private String username = Constants.DATABASE_USER;
+	private String password = Constants.DATABASE_PSW;
 	
 	private Timestamp timestamp;
 	
