@@ -55,10 +55,12 @@ public  class testApi  {
 			Instant instant=Instant.now();
 			conversation=new Conversazione(new ArrayList<Frase>(), java.util.Date.from(instant));
 								}
+		
 		String inputENG=Translator.translateString(input);
 		Frase temp=Alchemy.sendRequestReturnFrase(inputENG);
-		System.out.println("frase ritornata"+temp);
+		System.out.println("frase ritornata "+temp);
 		temp.setFraseOriginale(input);
+		conversation.addFrase(temp);
 		
 		
 		
