@@ -10,8 +10,7 @@ public class Constants {
 	public static final String WATSON_TRANSLATOR_USER = "afaa0bda-d8e6-4748-a524-a65c91aacc46";
 	public static final String WATSON_TRANSLATOR_PSW = "VhaWlvynTHqL";
 	
-	public static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-	public static final String DATABASE_URL = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/ad_85f9c5363d162e8";
-	public static final String DATABASE_USER = "b0179319c7b2ef";
-	public static final String DATABASE_PSW = "d319ebe7";
+	public static final String SERVER_URL = "192.168.1.4";
+	public static final int SERVER_PORT= 8189;
+	
 	}

@@ -3,6 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.Date;
 
+//non serve tutta la classe, si potrà levare
 public class Conversazione {
 
 	private ArrayList<Frase> frasi;

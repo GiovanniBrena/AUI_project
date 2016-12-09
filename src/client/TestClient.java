@@ -11,8 +11,8 @@ public class TestClient {
 	
 	private Thread connectionThread;
 
-	public String serverurl = "192.168.1.166";
-	public int serverport = 8189;
+	public String serverurl = Constants.SERVER_URL;
+	public int serverport = Constants.SERVER_PORT;
 	private static PrintWriter printwriter;
 	private static TestClient instance; 
 
@@ -38,6 +38,7 @@ public class TestClient {
 			connectionThread.start();
 		}
 		
+		@SuppressWarnings("deprecation")
 		public void stopClient(){
 			if(connectionThread!=null) {connectionThread.stop();}
 		}

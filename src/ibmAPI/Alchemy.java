@@ -5,14 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
 import com.ibm.watson.developer_cloud.alchemy.v1.*;
 import com.ibm.watson.developer_cloud.alchemy.v1.model.*;
-import com.ibm.watson.developer_cloud.alchemy.v1.model.DocumentEmotion.Emotion;
-
 import Model.Frase;
 
 public class Alchemy {
@@ -90,7 +86,6 @@ public class Alchemy {
 		List<Concept> conceptAlchemy = service.getConcepts(params).execute().getConcepts();
 		List<Entity> entitiesAlchemy = service.getEntities(params).execute().getEntities();
 		List<Keyword> keyWordAlchemy = service.getKeywords(params).execute().getKeywords();
-
 		
 		DocumentEmotion emotion = service.getEmotion(params).execute();
 		

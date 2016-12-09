@@ -1,7 +1,4 @@
 package ibmAPI;
-import java.awt.List;
-import java.util.Map;
-
 
 import com.ibm.watson.developer_cloud.language_translator.v2.*;
 import com.ibm.watson.developer_cloud.language_translator.v2.model.Language;

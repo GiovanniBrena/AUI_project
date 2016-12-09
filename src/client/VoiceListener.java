@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 
 import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
 import com.darkprograms.speech.recognizer.GoogleResponse;
@@ -16,7 +15,6 @@ import client.TestClient;
 import database.DBManager;
 
 
-@SuppressWarnings("restriction")
 public class VoiceListener {
 
 	private static VoiceListener instance = null;
@@ -28,10 +26,8 @@ public class VoiceListener {
 	private Mode mode = Mode.REPEATER;
 	
 	private Thread listeningThread;
-
-	private PrintStream write; 
 	
-	private DBManager db;
+	private static DBManager db;
 	
 	
 	
@@ -48,6 +44,7 @@ public class VoiceListener {
 		    public void run() {
 		    	
 		    	db = new DBManager();
+		    	db.newDbConvers();
 		    	
 		    	if(mode==Mode.CONVERSATION) {
 		    		String helloString = Conversation.initConversation();
@@ -58,7 +55,6 @@ public class VoiceListener {
 					try {
 						is = synth.getMP3Data(helloString);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} 
             		inputStreamToFile(is, "res/conv.mp3");
@@ -94,9 +90,9 @@ public class VoiceListener {
 			                // got a valid audio recognition
 			                if(response.getResponse()!=null) {
 			                	db.postPhrase(response.getResponse(), "Elderly");
+			                	
 			                	displayResponse(response);//Displays output in Console
 		                		App.print("User: " + response.getResponse());
-		                		writeLog(response);
 		                	
 		                		if(mode==Mode.REPEATER) {
 		                			Synthesiser synth = new Synthesiser("it");		                
@@ -116,7 +112,6 @@ public class VoiceListener {
 		    						try {
 		    							is = synth.getMP3Data(ABIresponse);
 		    						} catch (IOException e) {
-		    							// TODO Auto-generated catch block
 		    							e.printStackTrace();
 		    						} 
 		                			inputStreamToFile(is, "res/conv.mp3");
@@ -131,7 +126,6 @@ public class VoiceListener {
 			                
 			                System.out.println("Looping back");//Restarts loops
 			            } catch (Exception e) {
-			                // TODO Auto-generated catch block
 			                e.printStackTrace();
 			                System.out.println("Error Occured");
 			            }
@@ -166,8 +160,11 @@ public class VoiceListener {
 	}   
 	
 	
+	@SuppressWarnings("deprecation")
 	public void stopListening(){
-		if(listeningThread!=null) {listeningThread.stop();}
+		if(listeningThread!=null) {listeningThread.stop();
+		db.updateOraFine();
+		}
 	}
 	
 	
@@ -197,6 +194,7 @@ public class VoiceListener {
 		} finally {
 			if (inputStream != null) {
 				try {
+					db.updateOraFine();
 					inputStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -205,29 +203,15 @@ public class VoiceListener {
 			if (outputStream != null) {
 				try {
 					// outputStream.flush();
+					db.updateOraFine();
 					outputStream.close();
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
 			}
 		}
-	}
-	
-	private void writeLog(GoogleResponse res){
-		try
-	     {
-	          FileOutputStream log = new FileOutputStream("res/conversLog.txt");
-	          write = new PrintStream(log);
-	          write.println(res.getResponse());
-	          System.out.println("Log created.");
-	      }
-	      catch (IOException e)
-	      {
-	          System.out.println("Error: " + e);
-	          System.exit(1);
-	      }
-		
 	}
 	
 }

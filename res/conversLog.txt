@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-trova ABI porcatroia
-=======
-ciao anche
->>>>>>> origin/master
