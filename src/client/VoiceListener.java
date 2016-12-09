@@ -13,6 +13,7 @@ import com.darkprograms.speech.synthesiser.Synthesiser;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
 
 import client.TestClient;
+import database.DBManager;
 
 
 @SuppressWarnings("restriction")
@@ -30,6 +31,8 @@ public class VoiceListener {
 
 	private PrintStream write; 
 	
+	private DBManager db;
+	
 	
 	
 	public static VoiceListener getInstance(){
@@ -44,9 +47,12 @@ public class VoiceListener {
 		listeningThread = new Thread() {
 		    public void run() {
 		    	
+		    	db = new DBManager();
+		    	
 		    	if(mode==Mode.CONVERSATION) {
 		    		String helloString = Conversation.initConversation();
 		    		App.print("ABI: " + helloString);
+		    		db.postPhrase(helloString, "ABIapi");
 		    		Synthesiser synth = new Synthesiser("it");		                
             		InputStream is=null;
 					try {
@@ -87,7 +93,7 @@ public class VoiceListener {
 			                
 			                // got a valid audio recognition
 			                if(response.getResponse()!=null) {
-			                	
+			                	db.postPhrase(response.getResponse(), "Elderly");
 			                	displayResponse(response);//Displays output in Console
 		                		App.print("User: " + response.getResponse());
 		                		writeLog(response);
@@ -102,8 +108,9 @@ public class VoiceListener {
 		                		else if (mode==Mode.CONVERSATION) {
 			                	
 			                		String ABIresponse = Conversation.sendRequest(response.getResponse());
+			                		
 			                		App.print("ABI: " + ABIresponse);
-			                	
+			                		db.postPhrase(ABIresponse, "ABIapi");
 		    		    			Synthesiser synth = new Synthesiser("it");		                
 		                			InputStream is=null;
 		    						try {

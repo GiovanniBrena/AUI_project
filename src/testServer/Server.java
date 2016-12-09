@@ -9,6 +9,7 @@ import com.darkprograms.speech.recognizer.GoogleResponse;
 import com.darkprograms.speech.recognizer.Recognizer;
 import com.darkprograms.speech.synthesiser.Synthesiser;
 
+import database.DBManager;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 import javafx.application.Application;
@@ -58,6 +59,7 @@ public class Server extends Application {
 		public void startServer(){
 			serverThread = new Thread() {
 			    public void run() {
+			    	
 			    	initServer();
 			    }
 			};
@@ -111,12 +113,13 @@ public class Server extends Application {
 	 
 	      String lineread = "";
 	      boolean done = false;
+	   
 	      
 	      // connection loop
 	      while (((lineread = bufferedreader.readLine()) != null) && (!done)){
 	        System.out.println("Received from Client: " + lineread);
 	        
-	        //printwriter.println("You sent: " + lineread);
+	       // printwriter.println("You sent: " + lineread);
 	        
 	        print(lineread);
 	        
