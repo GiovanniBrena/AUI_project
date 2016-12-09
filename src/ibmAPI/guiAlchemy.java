@@ -40,7 +40,6 @@ public class guiAlchemy extends Application {
 	static TextArea console;
 	//dove scrivere risultati alchemy
 	static TextArea conversationInfoArea;
-	
 	static TextArea sentimentArea;
 	static TextArea emotionArea;
 	static TextArea typerRelArea;
@@ -48,7 +47,7 @@ public class guiAlchemy extends Application {
 	static TextArea entitiesArea;
 	static TextArea keywordArea;
 	
-	private TextArea[] alchemyTextAreas={sentimentArea,emotionArea,typerRelArea,conceptArea,entitiesArea,keywordArea};
+	static TextArea[] alchemyTextAreas={sentimentArea,emotionArea,typerRelArea,conceptArea,entitiesArea,keywordArea};
 	private String[] alchemyTextAreasTitle={"sentiment","emotion","typerRel","concept","entities","keywords"};
 	
 	
@@ -93,7 +92,6 @@ public class guiAlchemy extends Application {
         	tabPane.getTabs().add(tab);
 			
 		}
-        initializeTab();
         
       
        
@@ -171,28 +169,14 @@ public class guiAlchemy extends Application {
 	}
 	
 	public static void printAlchemyData(Frase f){
-		print("Frase Originale: "+f.getFraseOriginale());
-		print("Frase tradotta: "+f.getFraseTradotta());
-		
+		print("Frase Originale"+f.getFraseOriginale());
+		print("Frase tradotta"+f.getFraseTradotta());
 		if(f==null)System.out.println("frase nulla");
-	
-		sentimentArea.setText(f.getSentiment().toString());
+		for (int i = 0; i < alchemyTextAreas.length; i++) {
 		
-		emotionArea.setText(f.getEmotion().toString());
-		
-		for (int i = 0; i <f.getTypedRelation().size(); i++) {
-			typerRelArea.setText(f.getTypedRelation().get(i).toString());	
+			 alchemyTextAreas[i].setText(f.getDati(i).toString());
+			
 		}
-		for (int i = 0; i <f.getKeyWordAlchemy().size(); i++) {
-			keywordArea.setText(f.getKeyWordAlchemy().get(i).toString());	
-		}
-		for (int i = 0; i <f.getEntitiesAlchemy().size(); i++) {
-			keywordArea.setText(f.getEntitiesAlchemy().get(i).toString());	
-		}
-		for (int i = 0; i <f.getConceptAlchemy().size(); i++) {
-			keywordArea.setText(f.getConceptAlchemy().get(i).toString());	
-		}
-		
 		
 		
 		
@@ -215,21 +199,5 @@ public class guiAlchemy extends Application {
 		//voiceListener.startListening();
 		
 		}
-	private void initializeTab(){
-		
-		
-		sentimentArea=alchemyTextAreas[0];
-		emotionArea=alchemyTextAreas[1];
-		typerRelArea=alchemyTextAreas[2];
-		conceptArea=alchemyTextAreas[3];
-		entitiesArea=alchemyTextAreas[4];
-		keywordArea=alchemyTextAreas[5];
-		
-		
-		
-		
-		
-	}
-	
 
 }
