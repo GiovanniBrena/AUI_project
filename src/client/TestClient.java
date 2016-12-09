@@ -5,6 +5,8 @@ import java.net.*;
 
 import com.darkprograms.speech.synthesiser.Synthesiser;
 
+import database.DBManager;
+
 public class TestClient {
 	
 	private Thread connectionThread;
@@ -13,6 +15,8 @@ public class TestClient {
 	public int serverport = 8189;
 	private static PrintWriter printwriter;
 	private static TestClient instance; 
+
+	private DBManager db;
 	  
 	  public static TestClient getInstance(){
 		  if(instance==null) { instance = new TestClient();}
@@ -60,6 +64,8 @@ public class TestClient {
 	      socket.setSoTimeout(0);
 	      System.out.println("Connected.");
 	      
+	      db = new DBManager(); //db connection
+	      
 	      InputStreamReader inputstreamreader = new InputStreamReader(socket.getInputStream());
 	      BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
 	      //establish an printwriter using the output streamof the socket object
@@ -71,6 +77,8 @@ public class TestClient {
 	      String lineread = "";
 	      while ((lineread = bufferedreader.readLine()) != null){
 	        System.out.println("Received from Server: " + lineread);
+	        
+	        db.postPhrase(lineread, "Server");
 	        
 	        App.print("ABI: " + lineread);
 	        Synthesiser synth = new Synthesiser("it");		                
