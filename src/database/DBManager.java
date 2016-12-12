@@ -44,7 +44,7 @@ public class DBManager {
 		return maxIdConvers;
 	}
 
-	//record from db and print them out
+	//record from db and print them out, non serve
 	public void getData(){
 		try{
 
@@ -115,7 +115,7 @@ public class DBManager {
 			String query = "INSERT INTO Frase (contenuto, user, timestamp, fileaudio, idConvers) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement ps = con.prepareStatement(query);
 
-			ps.setString(1,myContent);
+			ps.setString(1,parseContent(myContent));
 			ps.setString(2, myUser);
 			ps.setTimestamp(3, timestamp);
 			ps.setString(4, fileaudio);
@@ -183,4 +183,18 @@ public class DBManager {
 			System.out.println("Error: " +ex);
 		}
 	}
+	
+	private String parseContent(String myContent) {
+		myContent = myContent.replaceAll("&", "&amp;");
+		myContent = myContent.replaceAll("à", "&agrave;");
+		myContent = myContent.replaceAll("è", "&egrave;");
+		myContent = myContent.replaceAll("é", "&eacute;");
+		myContent = myContent.replaceAll("É", "&Eacute;");
+		myContent = myContent.replaceAll("È", "&Egrave;");
+		myContent = myContent.replaceAll("ò", "&ògrave;");
+		myContent = myContent.replaceAll("ì", "&igrave;");
+		myContent = myContent.replaceAll("ù", "&ùgrave;");
+		return myContent;
+	}
+	
 }
