@@ -52,7 +52,6 @@ public class VoiceListener {
 		    	System.out.println("INITIALIZING...");
 		    	//instantiate DB, create and store new Conversation on DB
 		    	db = new DBManager();
-		    	db.start();
 		    	db.newDbConvers();
 		    	
 		    	if(mode==Mode.CONVERSATION) {
@@ -121,7 +120,7 @@ public class VoiceListener {
 		                	
 		                	if(useSentiments) {
 		                		// start Sentiment Analysis
-		                		SentimentAnalyzer.analyzeString(response.getResponse());
+		                		SentimentAnalyzer.analyzeString(response.getResponse(), idTupla);
 		                	}
 		                	
 		                	// switch by mode

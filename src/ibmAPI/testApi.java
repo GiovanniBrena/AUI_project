@@ -57,7 +57,7 @@ public  class testApi  {
 			conversation=new Conversazione(new ArrayList<Frase>(), java.util.Date.from(instant));
 								}
 		
-		SentimentAnalyzer.analyzeString(input);
+		//SentimentAnalyzer.analyzeString(input);
 		
 		String inputENG=Translator.translateString(input);
 		Frase temp=Alchemy.sendRequestReturnFrase(inputENG);

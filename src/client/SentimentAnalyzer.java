@@ -7,10 +7,11 @@ import com.ibm.watson.developer_cloud.alchemy.v1.model.Sentiment.SentimentType;
 import Model.Frase;
 import ibmAPI.Alchemy;
 import ibmAPI.Translator;
+import database.DBManager;
 
 public class SentimentAnalyzer {
 	
-	public static void analyzeString(String input){
+	public static void analyzeString(String input, int id){
 		
 		Thread analyzerThread = new Thread() {
 			
@@ -31,7 +32,8 @@ public class SentimentAnalyzer {
 				Double fearValue = emotions.getEmotion().getFear().doubleValue();
 				Double joyValue = emotions.getEmotion().getJoy().doubleValue();
 				Double sadnessValue = emotions.getEmotion().getSadness().doubleValue();
-				
+				DBManager db = new DBManager();
+				db.updateSentiment(sentimentScore, id);
 				
 				System.out.println("----------------------");
 				System.out.println("- SENTIMENT ANALYSIS -");

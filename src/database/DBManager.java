@@ -2,7 +2,7 @@ package database;
 
 import java.sql.*;
 
-public class DBManager extends Thread {
+public class DBManager {
 
 	private Connection con;
 	private Statement st;
@@ -36,8 +36,7 @@ public class DBManager extends Thread {
 			while(rs.next()){
 				maxIdConvers = rs.getInt(1);
 			}
-
-
+			rs.close();
 		}catch(Exception ex){
 			System.out.println("Errore qua:" +ex);
 		}
@@ -160,7 +159,7 @@ public class DBManager extends Thread {
 			posted.setString(2, date);
 			posted.setString(3, beginHour);
 			posted.setString(4, endHour);
-			posted.executeUpdate();
+			dbThread.start();
 
 			System.out.println("Values inserted into DB");
 		}catch(Exception ex) {
@@ -188,16 +187,17 @@ public class DBManager extends Thread {
 		}
 	}
 	
-	public void updateSentiment(String mySentiment){
+	public void updateSentiment(Double sentimentScore, int myId){
 		try
 		{
 			PreparedStatement ps = con.prepareStatement(
 					"UPDATE frase SET sentiment = ? WHERE id = ?");
 
-			ps.setString(1,mySentiment);
-			ps.setLong(2,getMaxId());
+			ps.setDouble(1,sentimentScore);
+			ps.setLong(2,myId);
 
 			ps.executeUpdate();
+			System.out.println("Aggiornati i sentimenti");
 			ps.close();
 		}catch (SQLException ex){
 			System.out.println("Error: " +ex);
@@ -217,7 +217,15 @@ public class DBManager extends Thread {
 		return myContent;
 	}
 	
-	 public void run(){
-	       System.out.println("MyThread running");
-	    }
+	Thread dbThread = new Thread() {
+		
+		@SuppressWarnings("unused")
+		public void run(PreparedStatement threadStatement){
+			try {
+				threadStatement.executeUpdate();
+			} catch (SQLException ex) {
+				System.out.println("Error: " +ex);
+			}
+		};
+	};
 }
