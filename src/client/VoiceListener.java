@@ -24,12 +24,8 @@ public class VoiceListener {
 	    REPEATER, CONVERSATION, MANUAL
 	}
 	private Mode mode = Mode.REPEATER;
-	
 	private Thread listeningThread;
-	
 	private static DBManager db;
-	
-	
 	
 	public static VoiceListener getInstance(){
 		if(instance==null) {instance = new VoiceListener();}
@@ -38,102 +34,125 @@ public class VoiceListener {
 	
 	public void setMode(Mode m) {mode = m;}
 	
+	
 	public void startListening(){
 		
 		listeningThread = new Thread() {
 		    public void run() {
 		    	
+		    	/* ---- INITIALIZATION ---- */
+		    	
+		    	//instantiate DB, create and store new Conversation on DB
 		    	db = new DBManager();
 		    	db.newDbConvers();
 		    	
 		    	if(mode==Mode.CONVERSATION) {
+		    		// initialize conversation 
 		    		String helloString = Conversation.initConversation();
 		    		App.print("ABI: " + helloString);
+		    		// store into DB
 		    		db.postPhrase(helloString, "ABIapi");
-		    		Synthesiser synth = new Synthesiser("it");		                
-            		InputStream is=null;
-					try {
-						is = synth.getMP3Data(helloString);
-					} catch (IOException e) {
-						e.printStackTrace();
-					} 
-            		inputStreamToFile(is, "res/conv.mp3");
-            		Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
+		    		
+		    		// get the default initial phrase to speech & play file
+		    		File audioResponse = synthesiseAudioToFile(helloString, "res/conv.mp3");
+            		Mp3Player.getInstance().playMp3File(audioResponse);
 		    	}
 		    	
+		    	// initialize client
 		    	else if(mode==Mode.MANUAL) {
 		    		TestClient.getInstance().startClient();
 		    	}
 		    	
+		    	// open microphone listening
 		    	MicrophoneAnalyzer mic = new MicrophoneAnalyzer(FLACFileWriter.FLAC);
 			    mic.setAudioFile(new File("AudioTestNow.flac"));
 			    System.out.println("ACTIVATING MICROPHONE");
+			    
+			    /* ---- END INITIALIZATION ---- */
+			    
+			    
+			    
+			    /* ---- LISTENING LOOP ---- */
+
 			    while(true){
 			        mic.open();
-
+			        // get current volume
 			        int volume = mic.getAudioVolume();
 			        boolean isSpeaking = (volume > NOISE_THRESHOLD);
+			        
+			        // start recording if volume > NOISE_THRESHOLD
 			        if(isSpeaking){
 			            try {
 			                System.out.println("RECORDING...");
-			                mic.captureAudioToFile(mic.getAudioFile());//Saves audio to file.
+			                //Saves audio to file.
+			                mic.captureAudioToFile(mic.getAudioFile());
+			                //Updates every second
 			                do{
-			                    Thread.sleep(1000);//Updates every second
+			                    Thread.sleep(1000);
 			                }
 			                while(mic.getAudioVolume() > NOISE_THRESHOLD);
+			                
+			                // finish recording
+			                
 			                System.out.println("Recording Complete!");
 			                System.out.println("Recognizing...");
+			                
+			                // instantiate Google Recognizer and get response
 			                Recognizer rec = new Recognizer(Recognizer.Languages.ITALIAN, Constants.GOOGLE_API_KEY);
 			                GoogleResponse response = rec.getRecognizedDataForFlac(mic.getAudioFile(), 3);
 			                
-			                
-			                // got a valid audio recognition
-			                if(response.getResponse()!=null) {
-			                	db.postPhrase(response.getResponse(), "Elderly");
+			                // invalid recognition
+			                if(response.getResponse()==null) { break; }
 			                	
-			                	displayResponse(response);//Displays output in Console
-		                		App.print("User: " + response.getResponse());
+			                // store response into DB
+			                db.postPhrase(response.getResponse(), "Elderly");
+			               	//Displays output in Console
+			               	displayResponse(response);
+		                	App.print("User: " + response.getResponse());
 		                	
-		                		if(mode==Mode.REPEATER) {
-		                			Synthesiser synth = new Synthesiser("it");		                
-		                			InputStream is = synth.getMP3Data(response.getResponse()); 
-		                			inputStreamToFile(is, "res/rec.mp3");
-		                			Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
+		                	// switch by mode
+		                	switch(mode) {	
+		                		case REPEATER: {
+		                			// just repeat
+		                			File audioResponse = synthesiseAudioToFile(response.getResponse(), "res/conv.mp3");
+		                    		Mp3Player.getInstance().playMp3File(audioResponse);
+		                			break;
 		                		}
 		                	
-		                		else if (mode==Mode.CONVERSATION) {
-			                	
-			                		String ABIresponse = Conversation.sendRequest(response.getResponse());
-			                		
+		                		case CONVERSATION: {
+		                			// get conversation response
+			                	    String ABIresponse = Conversation.sendRequest(response.getResponse());
 			                		App.print("ABI: " + ABIresponse);
+			                		
+			                		// store ABI response into DB
 			                		db.postPhrase(ABIresponse, "ABIapi");
-		    		    			Synthesiser synth = new Synthesiser("it");		                
-		                			InputStream is=null;
-		    						try {
-		    							is = synth.getMP3Data(ABIresponse);
-		    						} catch (IOException e) {
-		    							e.printStackTrace();
-		    						} 
-		                			inputStreamToFile(is, "res/conv.mp3");
-		                			Mp3Player.getInstance().playMp3File(new File("res/conv.mp3"));
+			                		
+			                		// read response
+			                		File audioResponse = synthesiseAudioToFile(ABIresponse, "res/conv.mp3");
+		                    		Mp3Player.getInstance().playMp3File(audioResponse);
+		                			break;
 		                		}
 		                		
-		                		else if (mode==Mode.MANUAL) {
+		                		case MANUAL: {
+		                			// just send text to server
 		                			TestClient.getInstance().sendToServer(response.getResponse());
+		                			break;
 		                		}
-			                }
+		                	}                
+			              //Restarts listening loops
+			                System.out.println("Looping back");
 			                
-			                
-			                System.out.println("Looping back");//Restarts loops
 			            } catch (Exception e) {
 			                e.printStackTrace();
 			                System.out.println("Error Occured");
 			            }
 			            finally{
+			            	db.updateOraFine();
 			                mic.close();//Makes sure microphone closes on exit.
 			            }
 			        }
 			    }
+			    /* ---- END LISTENING LOOP ---- */
 			}
 			
 			
@@ -145,14 +164,7 @@ public class VoiceListener {
 			    System.out.println("Google Response: " + gr.getResponse());
 			    System.out.println("Google is " + Double.parseDouble(gr.getConfidence())*100 + "% confident in"
 			            + " the reply");
-			    
-			    // Print alternative responses
-			    /* 
-			    System.out.println("Other Possible responses are: ");
-			    for(String s: gr.getOtherPossibleResponses()){
-			        System.out.println("\t" + s);
-			    }
-			    */
+
 		    }  
 		};
 
@@ -164,53 +176,6 @@ public class VoiceListener {
 	public void stopListening(){
 		if(listeningThread!=null) {listeningThread.stop();
 		db.updateOraFine();
-		}
-	}
-	
-	
-	
-	public static void inputStreamToFile(InputStream is, String path) {
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
-
-		try {
-			// read this file into InputStream
-			inputStream = is;
-
-			// write the inputStream to a FileOutputStream
-			outputStream =
-	                    new FileOutputStream(new File(path));
-
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (inputStream != null) {
-				try {
-					db.updateOraFine();
-					inputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (outputStream != null) {
-				try {
-					// outputStream.flush();
-					db.updateOraFine();
-					outputStream.close();
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			}
 		}
 	}
 	
