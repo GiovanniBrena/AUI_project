@@ -21,5 +21,11 @@
 	<classpathentry kind="lib" path="lib/mp3spi1.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="lib/jxbrowser-6.9.jar"/>
+	<classpathentry kind="lib" path="lib/jxbrowser-linux32-6.9.jar"/>
+	<classpathentry kind="lib" path="lib/jxbrowser-linux64-6.9.jar"/>
+	<classpathentry kind="lib" path="lib/jxbrowser-mac-6.9.jar"/>
+	<classpathentry kind="lib" path="lib/jxbrowser-win-6.9.jar"/>
+	<classpathentry kind="lib" path="lib/license.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
