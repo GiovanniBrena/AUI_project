@@ -3,8 +3,6 @@ package client;
 import java.io.*;
 import java.net.*;
 
-import com.darkprograms.speech.synthesiser.Synthesiser;
-
 import database.DBManager;
 
 public class TestClient {

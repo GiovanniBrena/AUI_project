@@ -1,14 +1,9 @@
 package client;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
 import com.darkprograms.speech.recognizer.GoogleResponse;
 import com.darkprograms.speech.recognizer.Recognizer;
-import com.darkprograms.speech.synthesiser.Synthesiser;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
 
 import client.TestClient;
@@ -30,6 +25,8 @@ public class VoiceListener {
 	private Thread listeningThread;
 	private static DBManager db;
 	
+	protected int idTupla;
+	
 	public static VoiceListener getInstance(){
 		if(instance==null) {instance = new VoiceListener();}
 		return instance;
@@ -46,13 +43,16 @@ public class VoiceListener {
 	public void startListening(){
 		
 		listeningThread = new Thread() {
-		    public void run() {
+		   
+
+			public void run() {
 		    	
 		    	/* ---- INITIALIZATION ---- */
 		    	
 		    	System.out.println("INITIALIZING...");
 		    	//instantiate DB, create and store new Conversation on DB
 		    	db = new DBManager();
+		    	db.start();
 		    	db.newDbConvers();
 		    	
 		    	if(mode==Mode.CONVERSATION) {
@@ -114,7 +114,7 @@ public class VoiceListener {
 			                if(response.getResponse()==null) { break; }
 			                	
 			                // store response into DB
-			                db.postPhrase(response.getResponse(), "Elderly");
+			                idTupla = db.postPhrase(response.getResponse(), "Elderly");
 			               	//Displays output in Console
 			               	displayResponse(response);
 		                	App.print("User: " + response.getResponse());

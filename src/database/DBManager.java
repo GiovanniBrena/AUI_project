@@ -2,7 +2,7 @@ package database;
 
 import java.sql.*;
 
-public class DBManager {
+public class DBManager extends Thread {
 
 	private Connection con;
 	private Statement st;
@@ -15,7 +15,7 @@ public class DBManager {
 
 	private Timestamp timestamp;
 
-	public DBManager(){
+	public DBManager() {
 		try{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, username, password);
@@ -105,7 +105,7 @@ public class DBManager {
 		} 
 	}
 
-	public void postPhrase (String myContent, String myUser){
+	public int postPhrase (String myContent, String myUser){
 
 		String fileaudio = "..."; //null per ora
 		int id = getMaxId();
@@ -126,6 +126,26 @@ public class DBManager {
 		}catch(Exception ex) {
 			System.out.println("Error: " +ex);
 		} 
+		return getId(timestamp.toString());
+	}
+
+	private int getId(String myTimestamp) {
+		String query = null;
+		int result = 0; 
+		myTimestamp = myTimestamp.substring(0, 19);
+
+		try{
+			query = "SELECT id FROM frase WHERE timestamp = '"+myTimestamp+"'";
+			
+			rs = st.executeQuery(query);
+			while(rs.next()){
+				result = rs.getInt(1);
+			}
+		}catch(Exception ex) {
+			System.out.println("Error: " +ex);
+		}
+		System.out.println("ID:" +result);
+		return result;
 	}
 
 	public void postConversation (int myId, Timestamp myTs){
@@ -197,4 +217,7 @@ public class DBManager {
 		return myContent;
 	}
 	
+	 public void run(){
+	       System.out.println("MyThread running");
+	    }
 }
