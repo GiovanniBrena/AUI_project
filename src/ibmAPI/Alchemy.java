@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.ibm.watson.developer_cloud.alchemy.v1.*;
 import com.ibm.watson.developer_cloud.alchemy.v1.model.*;
 import Model.Frase;
+import client.Constants;
 
 public class Alchemy {
 
@@ -23,7 +24,7 @@ public class Alchemy {
 		}
 
 		AlchemyLanguage service = new AlchemyLanguage();
-		service.setApiKey("151b8c898e6521b2397d1de19f9473138cb2c072");
+		service.setApiKey(Constants.WATSON_ALCHEMY_KEY);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(AlchemyLanguage.TEXT, input);
 		params.put("language", "english");
@@ -39,7 +40,8 @@ public class Alchemy {
 		CombinedResults combined=service.getCombinedResults(params).execute();
 
 		DocumentEmotion emotion = service.getEmotion(params).execute();
-
+		
+		
 		System.out.println("Sentiment \n:" + sentiment + "\n*************************");
 		System.out.println("Data \n:" + data + "\n*************************");
 		System.out.println("Combined \n:" + combined + "\n*************************");
@@ -73,7 +75,7 @@ public class Alchemy {
 		}
 
 		AlchemyLanguage service = new AlchemyLanguage();
-		service.setApiKey("151b8c898e6521b2397d1de19f9473138cb2c072");
+		service.setApiKey(Constants.WATSON_ALCHEMY_KEY);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(AlchemyLanguage.TEXT, input);
 		params.put("language", "english");

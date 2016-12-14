@@ -9,6 +9,7 @@ import com.ibm.watson.developer_cloud.language_translator.v2.model.Language;
 
 import Model.Conversazione;
 import Model.Frase;
+import client.SentimentAnalyzer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -55,6 +56,9 @@ public  class testApi  {
 			Instant instant=Instant.now();
 			conversation=new Conversazione(new ArrayList<Frase>(), java.util.Date.from(instant));
 								}
+		
+		SentimentAnalyzer.analyzeString(input);
+		
 		String inputENG=Translator.translateString(input);
 		Frase temp=Alchemy.sendRequestReturnFrase(inputENG);
 		System.out.println("frase ritornata"+temp);

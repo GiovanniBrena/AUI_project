@@ -82,10 +82,8 @@ public class TestClient {
 	        db.postPhrase(lineread, "Server");
 	        
 	        App.print("ABI: " + lineread);
-	        Synthesiser synth = new Synthesiser("it");		                
-			InputStream is = synth.getMP3Data(lineread); 
-			VoiceListener.inputStreamToFile(is, "res/rec.mp3");
-			Mp3Player.getInstance().playMp3File(new File("res/rec.mp3"));
+	        File audio = AudioFileManager.synthesiseAudioToFile(lineread, "res/rec.mp3");
+	        Mp3Player.getInstance().playMp3File(audio);
 	        
 	      }
 	      System.out.println("Closing connection.");

@@ -2,15 +2,19 @@ package client;
 
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
+
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import javafx.event.*;
+
 
 
 @SuppressWarnings("restriction")
@@ -23,12 +27,6 @@ public class App extends Application {
 
 	public static void main(String[] args) {
 	launch(args);
-	
-	// get VoiceListener instance
-	//VoiceListener voiceListener = VoiceListener.getInstance();
-	// start listening
-	//voiceListener.startListening();
-	
 	}
 
 
@@ -83,12 +81,19 @@ public class App extends Application {
           }
         }
       });
-
+    
+    CheckBox alchemyCheckbox = new CheckBox();
+    alchemyCheckbox.setText("Use Sentiment Analysis");
+    alchemyCheckbox.setSelected(true);
+    alchemyCheckbox.setOnAction(e -> handleAlchemyCheckboxAction(e));
     
     vbox.getChildren().add(title);
     vbox.getChildren().add(rb1);
     vbox.getChildren().add(rb2);
     vbox.getChildren().add(rb3);
+    vbox.getChildren().add(alchemyCheckbox);
+
+    
     
     BorderPane.setAlignment(vbox, Pos.CENTER_LEFT);
     //BorderPane.setMargin(list, new Insets(12,12,12,12));
@@ -103,6 +108,8 @@ public class App extends Application {
         		startListening.setText("START"); 
         		rb1.setDisable(false);
         		rb2.setDisable(false);
+        		rb3.setDisable(false);
+        		alchemyCheckbox.setDisable(false);
         		isActive=false;
         		print("Stop Recognizing.");
         		VoiceListener.getInstance().stopListening();
@@ -111,6 +118,8 @@ public class App extends Application {
         		startListening.setText("STOP"); 
         		rb1.setDisable(true);
         		rb2.setDisable(true);
+        		rb3.setDisable(true);
+        		alchemyCheckbox.setDisable(true);
         		isActive=true;
         		console.setText("");
         		VoiceListener.getInstance().startListening();
@@ -179,10 +188,15 @@ public class App extends Application {
 	
 	}
 	
+	private void handleAlchemyCheckboxAction(ActionEvent e){
+		VoiceListener.getInstance().setUseSentiment(!VoiceListener.getInstance().isUsingSentiment());
+	}
 	
 	public static void print(String s){
 		String newline = System.getProperty("line.separator");
 		console.appendText(newline+s);
 	}
+	
+	
 
 }

@@ -19,11 +19,14 @@ public class VoiceListener {
 
 	private static VoiceListener instance = null;
 	
+	private MicrophoneAnalyzer mic;
 	private final int NOISE_THRESHOLD = 20;
 	public enum Mode {
 	    REPEATER, CONVERSATION, MANUAL
 	}
 	private Mode mode = Mode.REPEATER;
+	private boolean useSentiments = true;
+	
 	private Thread listeningThread;
 	private static DBManager db;
 	
@@ -33,7 +36,12 @@ public class VoiceListener {
 	}
 	
 	public void setMode(Mode m) {mode = m;}
-	
+	public void setUseSentiment(boolean value) {useSentiments = value;}
+	public boolean isUsingSentiment() {return useSentiments;}
+	public int getMicrofoneVolume() {
+		if(mic==null) { return 0;}
+		else {return mic.getAudioVolume();}
+	}
 	
 	public void startListening(){
 		
@@ -42,6 +50,7 @@ public class VoiceListener {
 		    	
 		    	/* ---- INITIALIZATION ---- */
 		    	
+		    	System.out.println("INITIALIZING...");
 		    	//instantiate DB, create and store new Conversation on DB
 		    	db = new DBManager();
 		    	db.newDbConvers();
@@ -54,7 +63,7 @@ public class VoiceListener {
 		    		db.postPhrase(helloString, "ABIapi");
 		    		
 		    		// get the default initial phrase to speech & play file
-		    		File audioResponse = synthesiseAudioToFile(helloString, "res/conv.mp3");
+		    		File audioResponse = AudioFileManager.synthesiseAudioToFile(helloString, "res/conv.mp3");
             		Mp3Player.getInstance().playMp3File(audioResponse);
 		    	}
 		    	
@@ -64,7 +73,7 @@ public class VoiceListener {
 		    	}
 		    	
 		    	// open microphone listening
-		    	MicrophoneAnalyzer mic = new MicrophoneAnalyzer(FLACFileWriter.FLAC);
+		    	mic = new MicrophoneAnalyzer(FLACFileWriter.FLAC);
 			    mic.setAudioFile(new File("AudioTestNow.flac"));
 			    System.out.println("ACTIVATING MICROPHONE");
 			    
@@ -110,11 +119,17 @@ public class VoiceListener {
 			               	displayResponse(response);
 		                	App.print("User: " + response.getResponse());
 		                	
+		                	if(useSentiments) {
+		                		// start Sentiment Analysis
+		                		SentimentAnalyzer.analyzeString(response.getResponse());
+		                	}
+		                	
 		                	// switch by mode
 		                	switch(mode) {	
 		                		case REPEATER: {
 		                			// just repeat
-		                			File audioResponse = synthesiseAudioToFile(response.getResponse(), "res/conv.mp3");
+		                			File audioResponse = 
+		                					AudioFileManager.synthesiseAudioToFile(response.getResponse(), "res/conv.mp3");
 		                    		Mp3Player.getInstance().playMp3File(audioResponse);
 		                			break;
 		                		}
@@ -128,7 +143,8 @@ public class VoiceListener {
 			                		db.postPhrase(ABIresponse, "ABIapi");
 			                		
 			                		// read response
-			                		File audioResponse = synthesiseAudioToFile(ABIresponse, "res/conv.mp3");
+			                		File audioResponse = 
+		                					AudioFileManager.synthesiseAudioToFile(response.getResponse(), "res/conv.mp3");
 		                    		Mp3Player.getInstance().playMp3File(audioResponse);
 		                			break;
 		                		}
