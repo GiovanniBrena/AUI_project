@@ -32,7 +32,7 @@ public class Conversation {
 		MessageResponse response = service.message(Constants.WATSON_WORKSPACE_ID, newMessage).execute();
 		context = response.getContext();
 		
-		System.out.println(response);
+		//System.out.println(response);
 		
 		return response.getText().get(0);
 	}
@@ -40,7 +40,7 @@ public class Conversation {
 	public static String initConversation() {
 		context = null;
 		String response = sendRequest("");
-		System.out.println(response);
+		//System.out.println(response);
 		return response;
 	}
 	

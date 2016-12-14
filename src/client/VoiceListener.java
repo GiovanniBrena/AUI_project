@@ -144,7 +144,7 @@ public class VoiceListener {
 			                		
 			                		// read response
 			                		File audioResponse = 
-		                					AudioFileManager.synthesiseAudioToFile(response.getResponse(), "res/conv.mp3");
+		                					AudioFileManager.synthesiseAudioToFile(ABIresponse, "res/conv.mp3");
 		                    		Mp3Player.getInstance().playMp3File(audioResponse);
 		                			break;
 		                		}

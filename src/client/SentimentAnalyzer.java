@@ -15,6 +15,7 @@ public class SentimentAnalyzer {
 		Thread analyzerThread = new Thread() {
 			
 			public void run(){
+				try{
 				String inputENG=Translator.translateString(input);
 				Frase temp=Alchemy.sendRequestReturnFrase(inputENG);
 				temp.setFraseOriginale(input);
@@ -42,7 +43,10 @@ public class SentimentAnalyzer {
 				System.out.println("Joy: " + joyValue);
 				System.out.println("Sadness: " + sadnessValue);
 				System.out.println("----------------------");
-				
+				}
+				catch(NullPointerException e){
+					System.out.println("Alchemy: error while analyzing");
+				}
 			}
 		};
 		
