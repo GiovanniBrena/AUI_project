@@ -112,7 +112,7 @@ public class VoiceListener {
 							// invalid recognition
 							if(response.getResponse()==null) { 
 								System.out.println("riconoscimento non valido");
-								continue; //QUESTO BREAK NON VA BENE
+								continue; 
 							}
 
 							// store response into DB
@@ -129,9 +129,10 @@ public class VoiceListener {
 							// switch by mode
 							switch(mode) {	
 							case REPEATER: {
+								String audioUrl = createAudioUrl(idTupla);
 								// just repeat
 								File audioResponse = 
-										AudioFileManager.synthesiseAudioToFile(response.getResponse(), "res/conv.mp3");
+										AudioFileManager.synthesiseAudioToFile(response.getResponse(), audioUrl);
 								Mp3Player.getInstance().playMp3File(audioResponse);
 								break;
 							}
@@ -171,6 +172,12 @@ public class VoiceListener {
 					}
 				}
 				/* ---- END LISTENING LOOP ---- */
+			}
+
+
+			private String createAudioUrl(int idTupla) {
+				String myUrl = "res/conv"+idTupla+".mp3";
+				return myUrl;
 			}
 
 

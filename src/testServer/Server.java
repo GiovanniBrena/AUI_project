@@ -4,12 +4,6 @@ import java.io.*;
 import java.net.*;
 import java.util.Calendar;
 
-import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
-import com.darkprograms.speech.recognizer.GoogleResponse;
-import com.darkprograms.speech.recognizer.Recognizer;
-import com.darkprograms.speech.synthesiser.Synthesiser;
-
-import database.DBManager;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 import javafx.application.Application;
@@ -21,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-import net.sourceforge.javaflacencoder.FLACFileWriter;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
