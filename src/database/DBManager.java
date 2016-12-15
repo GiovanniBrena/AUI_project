@@ -10,7 +10,9 @@ public class DBManager {
 
 	private Timestamp timestamp;
 
-	
+
+
+
 	public int getMaxId(){
 		int maxIdConvers = 0;
 		try{
@@ -25,39 +27,6 @@ public class DBManager {
 			System.out.println("Errore qua:" +ex);
 		}
 		return maxIdConvers;
-	}
-
-	//record from db and print them out, non serve
-	public void getData(){
-		try{
-
-			String query = "select * from test";
-			rs = st.executeQuery(query);
-			System.out.println("Records from DB");
-			while(rs.next()){
-				String nome = rs.getString("nome");
-				String eta = rs.getString("eta");
-				String sesso = rs.getString("sesso");
-				System.out.println("Name: " +nome+ "  " +"Età: "+eta+ "    "+ "Sesso: " +sesso);
-			}
-
-		}catch(Exception ex){
-			System.out.println(ex);
-		}
-	}
-
-	//creare una nuova tabella da java, non serve
-	public void createTable() throws Exception{
-		try {
-
-			PreparedStatement create = con.prepareStatement("CREATE TABLE IF NOT EXISTS provazza(id int NOT NULL AUTO_INCREMENT, first varchar(255), last varchar(255), PRIMARY KEY(id))");
-			create.executeUpdate();
-
-		}catch(Exception ex){
-			System.out.println("Error: " +ex);
-		}finally{
-			System.out.println("function completed");
-		}
 	}
 
 
@@ -80,7 +49,8 @@ public class DBManager {
 			ps.setString(4, audio);
 			ps.setInt(5, newId);
 
-			ps.executeUpdate();
+			//ps.executeUpdate();
+			createThread(ps);
 
 			System.out.println("Starting a new conv into DB");
 		}catch(Exception ex) {
@@ -103,7 +73,9 @@ public class DBManager {
 			ps.setTimestamp(3, timestamp);
 			ps.setString(4, fileaudio);
 			ps.setInt(5, id);
-			ps.executeUpdate();
+
+			createThread(ps);
+			//ps.executeUpdate();
 
 			System.out.println("Values inserted into DB");
 		}catch(Exception ex) {
@@ -119,7 +91,7 @@ public class DBManager {
 
 		try{
 			query = "SELECT id FROM frase WHERE timestamp = '"+myTimestamp+"'";
-			
+
 			rs = st.executeQuery(query);
 			while(rs.next()){
 				result = rs.getInt(1);
@@ -143,7 +115,7 @@ public class DBManager {
 			posted.setString(2, date);
 			posted.setString(3, beginHour);
 			posted.setString(4, endHour);
-			dbThread.start();
+			createThread(posted);
 
 			System.out.println("Values inserted into DB");
 		}catch(Exception ex) {
@@ -164,13 +136,14 @@ public class DBManager {
 			ps.setString(1,endHour);
 			ps.setLong(2,getMaxId());
 
-			ps.executeUpdate();
-			ps.close();
+			//ps.executeUpdate();
+			createThread(ps);
+
 		}catch (SQLException ex){
 			System.out.println("Error: " +ex);
 		}
 	}
-	
+
 	public void updateSentiment(Double sentimentScore, int myId){
 		try
 		{
@@ -180,14 +153,15 @@ public class DBManager {
 			ps.setDouble(1,sentimentScore);
 			ps.setLong(2,myId);
 
-			ps.executeUpdate();
+			//ps.executeUpdate();
+			createThread(ps);
+
 			System.out.println("Aggiornati i sentimenti");
-			ps.close();
 		}catch (SQLException ex){
 			System.out.println("Error: " +ex);
 		}
 	}
-	
+
 	private String parseContent(String myContent) {
 		myContent = myContent.replaceAll("&", "&amp;");
 		myContent = myContent.replaceAll("à", "&agrave;");
@@ -200,18 +174,8 @@ public class DBManager {
 		myContent = myContent.replaceAll("ù", "&ùgrave;");
 		return myContent;
 	}
-	
-	Thread dbThread = new Thread() {
-		
-		@SuppressWarnings("unused")
-		public void run(PreparedStatement threadStatement){
-			try {
-				threadStatement.executeUpdate();
-			} catch (SQLException ex) {
-				System.out.println("Error: " +ex);
-			}
-		};
-	};
+
+
 
 
 	public void updateEmotion(Double angerValue, Double disgustValue, Double fearValue, Double joyValue,
@@ -228,13 +192,29 @@ public class DBManager {
 			ps.setDouble(5,sadnessValue);
 			ps.setLong(6,id);
 
-			ps.executeUpdate();
+			//ps.executeUpdate();
+			createThread(ps);
 			System.out.println("Aggiornate le emozioni");
-			ps.close();
-			
+
 		}catch (SQLException ex){
 			System.out.println("Error: " +ex);
 		}
-		
+
+	}
+
+
+	public void createThread(PreparedStatement threadStatement){
+		Thread dbThread = new Thread() {
+
+			public void run(){
+				try {
+					threadStatement.executeUpdate();
+					threadStatement.close();
+				} catch (SQLException ex) {
+					System.out.println("Error: " +ex);
+				}
+			};
+		};
+		dbThread.start();
 	}
 }
