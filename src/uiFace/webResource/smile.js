@@ -81,16 +81,28 @@ function setMouth(state) {
 }
 
 function speak(value) {
-    if(!value) {clearInterval(speakAnimationID); setMouth(mSmile);}
+    if(!value) {clearInterval(speakAnimationID);
+        setTimeout(function(){setMouth(mSmile);
+    }, 100);}
     else {
         speakAnimationID = setInterval(function () {
-            if (mCurrentState == mBigSmile) {
-                setMouth(mSmile);
-            }
-            else {
-                setMouth(mBigSmile)
-            }
-        }, 200);
+            setMouth(getRandomMouth());
+            setTimeout(function(){
+                setMouth(getRandomMouth());
+            }, 100);
+        }, 300);
+    }
+}
+
+function getRandomMouth() {
+    var index = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+    switch(index) {
+        case 1:
+        {return mSmile;}
+        case 2:
+        {return mBigSmile;}
+        case 3:
+        {return mOoh;}
     }
 }
 

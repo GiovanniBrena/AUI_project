@@ -101,7 +101,7 @@ public class VoiceListener {
 							while(mic.getAudioVolume() > NOISE_THRESHOLD);
 
 							// finish recording
-							App.face.think(true);
+							//App.face.think(true);
 
 							System.out.println("Recording Complete!");
 							System.out.println("Recognizing...");
@@ -163,7 +163,7 @@ public class VoiceListener {
 							}
 							}                
 							//Restarts listening loops
-							App.face.think(false);
+							//App.face.think(false);
 							System.out.println("Looping back");
 
 						} catch (Exception e) {
