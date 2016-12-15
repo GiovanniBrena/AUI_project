@@ -46,7 +46,8 @@ public class FaceUI {
         //browser.loadURL("C:/Users/andrea/workspaceTest/provaIBM/src/main/java/provaJfXBrowser/webResource/index.html");
         String currentDirectory = System.getProperty("user.dir");
         System.out.println(currentDirectory);
-        browser.loadURL(currentDirectory+"/src/uiFace"+"/webResource/index.html");
+        //https://abiproject.000webhostapp.com/uiFace/index.html
+        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/index.html"));
         
       
     }
