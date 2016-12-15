@@ -3,6 +3,9 @@ package client;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 
+import com.teamdev.jxbrowser.chromium.BrowserCore;
+import com.teamdev.jxbrowser.chromium.internal.Environment;
+
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -12,12 +15,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import uiFace.FaceComponent;
+import uiFace.FaceComponent.FaceState;
 import javafx.event.*;
 
 
 
 @SuppressWarnings("restriction")
 public class App extends Application {
+	
+	public static FaceComponent face;
 	
 	boolean isActive = false; 
 	static TextArea console;
@@ -28,6 +35,13 @@ public class App extends Application {
 	launch(args);
 	}
 
+	@Override
+	public void init() throws Exception {
+	    // On Mac OS X Chromium engine must be initialized in non-UI thread.
+	    if (Environment.isMac()) {
+	        BrowserCore.initialize();
+	    }
+	}
 
 	@SuppressWarnings({"unchecked" })
 	@Override
@@ -41,9 +55,9 @@ public class App extends Application {
 	BorderPane componentLayout = new BorderPane();
 	componentLayout.setPadding(new Insets(20,0,20,20));
 	
-	VBox vbox = new VBox();
-    vbox.setPadding(new Insets(10));
-    vbox.setSpacing(8);
+	VBox mainLeftVbox = new VBox();
+    mainLeftVbox.setPadding(new Insets(10));
+    mainLeftVbox.setSpacing(24);
 
     Text title = new Text("MODE");
     //title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -81,22 +95,50 @@ public class App extends Application {
         }
       });
     
+    VBox optionVBox = new VBox();
+    optionVBox.setSpacing(8);
+    Text optionTitle = new Text("OPTIONS");
     CheckBox alchemyCheckbox = new CheckBox();
     alchemyCheckbox.setText("Use Sentiment Analysis");
     alchemyCheckbox.setSelected(true);
     alchemyCheckbox.setOnAction(e -> handleAlchemyCheckboxAction(e));
+    optionVBox.getChildren().add(optionTitle);
+    optionVBox.getChildren().add(alchemyCheckbox);
     
-    vbox.getChildren().add(title);
-    vbox.getChildren().add(rb1);
-    vbox.getChildren().add(rb2);
-    vbox.getChildren().add(rb3);
-    vbox.getChildren().add(alchemyCheckbox);
-
+    VBox modeVBox = new VBox();
+    modeVBox.setSpacing(8);
+    modeVBox.getChildren().add(title);
+    modeVBox.getChildren().add(rb1);
+    modeVBox.getChildren().add(rb2);
+    modeVBox.getChildren().add(rb3);
+    
+    VBox serverVBox = new VBox();
+    serverVBox.setSpacing(8);
+    Text serverTitle = new Text("SERVER");
+    Text serverLabel = new Text("ip address");
+    Text portLabel = new Text("port");
+    ipField = new TextField ();
+    portField = new TextField ();
+    ipField.setText(TestClient.getInstance().serverurl);
+    portField.setText(String.valueOf(TestClient.getInstance().serverport));
+    
+    ipField.setDisable(true);
+    portField.setDisable(true);
+    
+    serverVBox.getChildren().add(serverTitle);
+    serverVBox.getChildren().add(serverLabel);
+    serverVBox.getChildren().add(ipField);
+    serverVBox.getChildren().add(portLabel);
+    serverVBox.getChildren().add(portField);
+    
+    mainLeftVbox.getChildren().add(modeVBox);
+    mainLeftVbox.getChildren().add(optionVBox);
+    mainLeftVbox.getChildren().add(serverVBox);
     
     
-    BorderPane.setAlignment(vbox, Pos.CENTER_LEFT);
-    //BorderPane.setMargin(list, new Insets(12,12,12,12));
-    //borderPane.setCenter(list);
+    
+    
+    BorderPane.setAlignment(mainLeftVbox, Pos.CENTER_LEFT);
     
     Button startListening = new Button("START");
     BorderPane.setAlignment(startListening, Pos.BASELINE_CENTER);
@@ -122,18 +164,19 @@ public class App extends Application {
         		isActive=true;
         		console.setText("");
         		VoiceListener.getInstance().startListening();
+        		face.anim();
         		}
         }
     });
     
-    VBox vbox2 = new VBox();
-    vbox2.setPadding(new Insets(10));
-    vbox2.setSpacing(8);
+    VBox consoleVbox = new VBox();
+    consoleVbox.setPadding(new Insets(10));
+    consoleVbox.setSpacing(8);
 
     Text title2 = new Text("CONSOLE");
     console = new TextArea();
     console.setEditable(false);
-    console.setPrefHeight(300);
+    console.setPrefSize(300, 300);
     console.textProperty().addListener(new ChangeListener<Object>() {
         @Override
         public void changed(ObservableValue<?> observable, Object oldValue,
@@ -149,37 +192,22 @@ public class App extends Application {
         }
     });
     
-    vbox2.getChildren().add(title2);
-    vbox2.getChildren().add(console);
-    vbox2.getChildren().add(clearConsole);
+    consoleVbox.getChildren().add(title2);
+    consoleVbox.getChildren().add(console);
+    consoleVbox.getChildren().add(clearConsole);
     
-    VBox topHBox = new VBox();
-    topHBox.setPadding(new Insets(10));
-    topHBox.setSpacing(8);
+    face = new FaceComponent();
+    face.setMaxSize(500, 500);
+    face.setFace(FaceState.mSmile);
     
-    Text serverLabel = new Text("Server IP");
-    Text portLabel = new Text("port");
-    ipField = new TextField ();
-    portField = new TextField ();
-    ipField.setText(TestClient.getInstance().serverurl);
-    portField.setText(String.valueOf(TestClient.getInstance().serverport));
-    
-    ipField.setDisable(true);
-    portField.setDisable(true);
-    
-    topHBox.getChildren().add(serverLabel);
-    topHBox.getChildren().add(ipField);
-    topHBox.getChildren().add(portLabel);
-    topHBox.getChildren().add(portField);
-    
-    componentLayout.setRight(topHBox);
-    componentLayout.setLeft(vbox);
-    componentLayout.setCenter(vbox2);
+    componentLayout.setCenter(face);
+    componentLayout.setLeft(mainLeftVbox);
+    componentLayout.setRight(consoleVbox);
     componentLayout.setBottom(startListening);
     
     
 	//Add the BorderPane to the Scene
-	Scene appScene = new Scene(componentLayout,1000,500);
+	Scene appScene = new Scene(componentLayout,1200,650);
 
 	//Add the Scene to the Stage
 	primaryStage.setScene(appScene);

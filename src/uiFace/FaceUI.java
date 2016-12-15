@@ -1,24 +1,25 @@
 package uiFace;
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
- 
+import javafx.scene.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.Scanner;
  
 /**
  * The sample demonstrates how to create Browser instance, embed it, display and load
  * specified URL.
  */
+
 public class FaceUI {
 	
 	static Browser browser = new Browser();
-	
-	
 	
 	//mouth State
 	public static final int mNormal=1;
@@ -28,11 +29,11 @@ public class FaceUI {
 	public static final int mOoh=5;
 	
 	
-	
-	
     public FaceUI() {
         browser = new Browser();
         BrowserView view = new BrowserView(browser);
+        
+        
         JFrame frame = new JFrame("ABI - Hello World");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
@@ -47,21 +48,19 @@ public class FaceUI {
         String currentDirectory = System.getProperty("user.dir");
         System.out.println(currentDirectory);
         //https://abiproject.000webhostapp.com/uiFace/index.html
-        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/index.html"));
-        
-      
+        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/index.html"));     
     }
     
-    private String  returnMouthState(int i){
-    String mTo="";
-    switch (i) {
-	case mNormal:return "mNormal";
-	case mSmile:return"mSmile";
-	case mBigSmile:return"mBigSmile";
-	case mSad:return"mSad";
-	case mOoh:return"mOoh";
-	default:return "mNormal";
-	}	
+    private String returnMouthState(int i){
+    	String mTo="";
+    	switch (i) {
+    		case mNormal:return "mNormal";
+    		case mSmile:return"mSmile";
+    		case mBigSmile:return"mBigSmile";
+    		case mSad:return"mSad";
+    		case mOoh:return"mOoh";
+    		default:return "mNormal";
+    	}	
     }
 
     private void setFace(int i){
@@ -70,6 +69,8 @@ public class FaceUI {
     private void anim(){
     	browser.executeJavaScript("animTo();");
     }
+    
+    
     public static void main(String[] args) {
 		FaceUI face=new FaceUI();
 		
@@ -82,7 +83,6 @@ public class FaceUI {
 		face.setFace(i);
 		}
 	}
-    
     
     
     

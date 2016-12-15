@@ -1,1 +1,11 @@
 /target/
+
+hs_err_pid13099.log
+
+hs_err_pid13108.log
+
+hs_err_pid13170.log
+
+*.log
+
+AudioTestNow.flac
