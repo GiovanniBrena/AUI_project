@@ -1,6 +1,7 @@
 body {
     margin: 0;
     overflow: hidden;
+    background-color: transparent;
 }
 
 #block {
@@ -18,9 +19,117 @@ body {
 }
 
 #block svg {
-    padding: 50px;
+    padding: 0px 50px;
+    position: relative;
+    top: -60px;
 }
 
-#sad,#normalSmile {
+#sad,#normalSmile, #left-closed-eye, #right-closed-eye {
     visibility: hidden;
 }
+
+#eyes-open-container {
+    visibility: visible;
+}
+
+
+
+
+/* Bubble */
+@-webkit-keyframes wave {
+    from {
+        background-color: #B6B5B9;
+    }
+    to {
+        background-color: #9E9EA1;
+    }
+}
+@keyframes wave {
+    from {
+        background-color: #B6B5B9;
+    }
+    to {
+        background-color: #9E9EA1;
+    }
+}
+.dot {
+    border-radius: 50px;
+    width: 36px;
+    height: 36px;
+    background-color: #B6B5B9;
+    display: block;
+    position: absolute;
+    -webkit-animation: wave 500ms infinite alternate;
+    animation: wave 500ms infinite alternate;
+    left: 72px;
+    top: 42px;
+    -webkit-animation-delay: 250ms;
+    animation-delay: 250ms;
+}
+.dot::before {
+    border-radius: 50px;
+    width: 36px;
+    height: 36px;
+    background-color: #B6B5B9;
+    display: block;
+    position: absolute;
+    -webkit-animation: wave 500ms infinite alternate;
+    animation: wave 500ms infinite alternate;
+    content: "";
+    left: -46px;
+    top: 0;
+}
+.dot::after {
+    border-radius: 50px;
+    width: 36px;
+    height: 36px;
+    background-color: #B6B5B9;
+    display: block;
+    position: absolute;
+    -webkit-animation: wave 500ms infinite alternate;
+    animation: wave 500ms infinite alternate;
+    -webkit-animation-delay: 166.66667ms;
+    animation-delay: 166.66667ms;
+    content: "";
+    left: 46px;
+    top: 0;
+}
+
+.bubble {
+    visibility: hidden;
+    z-index: 10;
+    border-radius: 120px;
+    position: relative;
+    height: 120px;
+    top: -40px;
+    right: -300px;
+    width: 180px;
+    background-color: red;
+    background-color: #E6E7ED;
+}
+/*
+.bubble::before {
+    border-radius: 36px;
+    width: 30px;
+    height: 30px;
+    background-color: #E6E7ED;
+    display: block;
+    position: absolute;
+    content: "";
+    background-color: #E6E7ED;
+    bottom: -8px;
+    left: -25px;
+}
+.bubble::after {
+    border-radius: 80px;
+    width: 50px;
+    height: 50px;
+    background-color: #E6E7ED;
+    display: block;
+    position: absolute;
+    content: "";
+    background-color: #E6E7ED;
+    bottom: 0;
+    left: -10px;
+}
+*/

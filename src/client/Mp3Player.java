@@ -2,6 +2,8 @@ package client;
 import java.io.*;
 import javax.sound.sampled.*;
 
+import uiFace.FaceComponent.FaceState;
+
 public class Mp3Player {
 
 	private static Mp3Player instance = null;
@@ -30,6 +32,8 @@ public class Mp3Player {
 				line.open(decodedFormat);
 				byte[] data = new byte[4096];
 				// Start
+				App.face.speak(true);
+				
 				line.start();
 				
 				int nBytesRead;
@@ -37,6 +41,7 @@ public class Mp3Player {
 					line.write(data, 0, nBytesRead);
 				}
 				// Stop
+				App.face.speak(false);
 				line.drain();
 				line.stop();
 				line.close();

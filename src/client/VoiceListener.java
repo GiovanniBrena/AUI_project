@@ -101,6 +101,7 @@ public class VoiceListener {
 							while(mic.getAudioVolume() > NOISE_THRESHOLD);
 
 							// finish recording
+							App.face.think(true);
 
 							System.out.println("Recording Complete!");
 							System.out.println("Recognizing...");
@@ -112,9 +113,12 @@ public class VoiceListener {
 							// invalid recognition
 							if(response.getResponse()==null) { 
 								System.out.println("riconoscimento non valido");
+								App.face.think(false);
 								continue; 
 							}
 
+							
+							
 							// store response into DB
 							idTupla = db.postPhrase(response.getResponse(), "Elderly");
 							//Displays output in Console
@@ -125,7 +129,7 @@ public class VoiceListener {
 								// start Sentiment Analysis
 								SentimentAnalyzer.analyzeString(response.getResponse(), idTupla);
 							}
-
+							
 							// switch by mode
 							switch(mode) {	
 							case REPEATER: {
@@ -159,6 +163,7 @@ public class VoiceListener {
 							}
 							}                
 							//Restarts listening loops
+							App.face.think(false);
 							System.out.println("Looping back");
 
 						} catch (Exception e) {

@@ -9,11 +9,68 @@ var mBlock = document.getElementById('block'),
     mOoh = document.getElementById('ooh'),
     mLeftPupil = document.getElementById('left-pupil'),
     mRightPupil = document.getElementById('right-pupil');
+    eyes = document.getElementById('eyes');
+    leftClosedEye = document.getElementById('left-closed-eye');
+    rightClosedEye = document.getElementById('right-closed-eye');
+    thinkBubble = document.getElementById('think-bubble');
+
+var speakAnimationID;
+var eyesAnimationID;
+var thinkAnimationID;
 
 // visibility and animation
 
 var mHappyAnimation;
 var mCurrentState;
+
+animateEyes(true);
+
+function animateEyes(value) {
+    if(!value) {clearInterval(eyesAnimationID); closeEyes(false);}
+    else {
+        eyesAnimationID = setInterval(function () {
+            closeEyes(true);
+            setTimeout(function(){
+                closeEyes(false)
+            }, 400);
+        }, 5000);
+    }
+}
+
+function closeEyes(value) {
+    if(value) {
+        eyes.style.visibility = 'hidden';
+        mLeftPupil.style.visibility = 'hidden';
+        mRightPupil.style.visibility = 'hidden';
+        leftClosedEye.style.visibility = 'visible';
+        rightClosedEye.style.visibility = 'visible';
+    }
+    else {
+        eyes.style.visibility = 'visible';
+        mLeftPupil.style.visibility = 'visible';
+        mRightPupil.style.visibility = 'visible';
+        leftClosedEye.style.visibility = 'hidden';
+        rightClosedEye.style.visibility = 'hidden';
+    }
+}
+
+
+function think(value) {
+    if(!value) {
+        clearInterval(thinkAnimationID);
+        //thinkBubble.style.visibility = "visible";
+        setMouth(mSmile);
+    }
+    else {
+        thinkAnimationID = setInterval(function () {
+            //thinkBubble.style.visibility = "visible";
+            setMouth(mOoh);
+            setTimeout(function(){
+                setMouth(mSmile);
+            }, 2000);
+        }, 4000);
+    }
+}
 
 //set state of the mouth
 function setMouth(state) {
@@ -21,6 +78,20 @@ function setMouth(state) {
     TweenMax.set(state, {visibility:'visible'});
     mCurrentState=state;
 
+}
+
+function speak(value) {
+    if(!value) {clearInterval(speakAnimationID); setMouth(mSmile);}
+    else {
+        speakAnimationID = setInterval(function () {
+            if (mCurrentState == mBigSmile) {
+                setMouth(mSmile);
+            }
+            else {
+                setMouth(mBigSmile)
+            }
+        }, 200);
+    }
 }
 
 function setPupilAngle(angle) {
@@ -121,6 +192,7 @@ function superHappy() {
     mHappyAnimation.call(setMouth, [mSmile]);
 }
 
+/*
 // gui
 
 var mGui = new dat.GUI(),
@@ -181,3 +253,4 @@ function radiiEqual(v) {
 
 //mBlock.addEventListener('click', happy);
 //happy();
+*/

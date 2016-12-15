@@ -164,6 +164,7 @@ public class App extends Application {
         		isActive=true;
         		console.setText("");
         		VoiceListener.getInstance().startListening();
+        		face.setFace(FaceState.mSmile);
         		face.anim();
         		}
         }
@@ -199,6 +200,7 @@ public class App extends Application {
     face = new FaceComponent();
     face.setMaxSize(500, 500);
     face.setFace(FaceState.mSmile);
+    face.animateEyes(true);
     
     componentLayout.setCenter(face);
     componentLayout.setLeft(mainLeftVbox);

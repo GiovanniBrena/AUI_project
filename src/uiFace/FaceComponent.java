@@ -16,28 +16,35 @@ public class FaceComponent extends BrowserView {
 	public enum FaceState {
 		mNormal, mSmile, mBigSmile, mSad, mOoh
 	}
-	private FaceState faceState; 
-	
-	public static final int mNormal=1;
-	public static final int mSmile=2;
-	public static final int mBigSmile=3;
-	public static final int mSad=4;
-	public static final int mOoh=5;
-	
+	private FaceState faceState; 	
 	
 	public FaceComponent() {
 		super(browser);
         String currentDirectory = System.getProperty("user.dir");
-        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/index.html"));        
+        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/index.html"));    
+        setFace(FaceState.mOoh);
 	}
 
     public void setFace(FaceState state){
     	faceState = state;
-    	browser.executeJavaScript("setMouth("+"mSad"+");");
+    	browser.executeJavaScript("setMouth("+faceState+");");
     }
     public void anim(){
     	browser.executeJavaScript("animTo();");
     }
-        
+    
+    public void speak(boolean value){
+    	browser.executeJavaScript("speak("+value+");");
+    }
+    
+    public void animateEyes(boolean value){
+    	browser.executeJavaScript("animateEyes("+value+");");
+    }
+    
+    public void think(boolean value){
+    	browser.executeJavaScript("think("+value+");");
+    }
+    
+    
     
 }
