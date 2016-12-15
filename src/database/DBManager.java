@@ -4,28 +4,13 @@ import java.sql.*;
 
 public class DBManager {
 
-	private Connection con;
+	Connection con=ConnectionProvider.getCon();
 	private Statement st;
 	private ResultSet rs;
-	
-	private String driver = ConstantsDB.DATABASE_DRIVER;
-	private String url = ConstantsDB.DATABASE_URL;
-	private String username = ConstantsDB.DATABASE_USER;
-	private String password = ConstantsDB.DATABASE_PSW;
 
 	private Timestamp timestamp;
 
-	public DBManager() {
-		try{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, username, password);
-			System.out.println("Connected to DB");
-
-		}catch(Exception ex){
-			System.out.println("Error: " +ex);
-		}
-	}
-
+	
 	public int getMaxId(){
 		int maxIdConvers = 0;
 		try{
@@ -36,7 +21,6 @@ public class DBManager {
 			while(rs.next()){
 				maxIdConvers = rs.getInt(1);
 			}
-			rs.close();
 		}catch(Exception ex){
 			System.out.println("Errore qua:" +ex);
 		}
@@ -228,4 +212,29 @@ public class DBManager {
 			}
 		};
 	};
+
+
+	public void updateEmotion(Double angerValue, Double disgustValue, Double fearValue, Double joyValue,
+			Double sadnessValue, int id) {
+		try
+		{
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE frase SET anger = ?, disgust = ?, fear = ?, joy = ?, sadness = ? WHERE id = ?");
+
+			ps.setDouble(1,angerValue);
+			ps.setDouble(2, disgustValue);
+			ps.setDouble(3,fearValue);
+			ps.setDouble(4,joyValue);
+			ps.setDouble(5,sadnessValue);
+			ps.setLong(6,id);
+
+			ps.executeUpdate();
+			System.out.println("Aggiornate le emozioni");
+			ps.close();
+			
+		}catch (SQLException ex){
+			System.out.println("Error: " +ex);
+		}
+		
+	}
 }

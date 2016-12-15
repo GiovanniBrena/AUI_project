@@ -34,6 +34,7 @@ public class SentimentAnalyzer {
 				Double sadnessValue = emotions.getEmotion().getSadness().doubleValue();
 				DBManager db = new DBManager();
 				db.updateSentiment(sentimentScore, id);
+				db.updateEmotion( angerValue, disgustValue, fearValue, joyValue, sadnessValue, id);
 				
 				System.out.println("----------------------");
 				System.out.println("- SENTIMENT ANALYSIS -");
