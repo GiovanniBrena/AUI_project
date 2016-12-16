@@ -35,44 +35,42 @@ public class DBManager {
 		String inizioC = ConstantsDB.NEW_CONVERSATION;
 		String user = ConstantsDB.DB_USER;
 		timestamp = new Timestamp(System.currentTimeMillis());
-		String audio = "...";
+		String audio = "0";
 		int newId = getMaxId() +1;
 
 		postConversation(newId, timestamp);
 
 		try{
-			String query = "INSERT INTO Frase (contenuto, user, timestamp, fileaudio, idConvers) VALUES (?, ?, ?, ?, ?)";
+			String query = "INSERT INTO Frase (contenuto, user, timestamp, idConvers, rec_file) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.setString(1, inizioC);
 			ps.setString(2, user);
 			ps.setTimestamp(3, timestamp);
-			ps.setString(4, audio);
-			ps.setInt(5, newId);
+			ps.setInt(4, newId);
+			ps.setString(5, audio);
 
 			//ps.executeUpdate();
 			createThread(ps);
 
 			System.out.println("Starting a new conv into DB");
 		}catch(Exception ex) {
-			System.out.println("Error: " +ex);
+			System.out.println("Errorazzo: " +ex);
 		} 
 	}
 
 	public int postPhrase (String myContent, String myUser){
-
-		String fileaudio = "..."; //null per ora
+	
 		int id = getMaxId();
 		timestamp = new Timestamp(System.currentTimeMillis());
-
+		
 		try{
-			String query = "INSERT INTO Frase (contenuto, user, timestamp, fileaudio, idConvers) VALUES (?, ?, ?, ?, ?)";
+			String query = "INSERT INTO Frase (contenuto, user, timestamp, idConvers) VALUES (?, ?, ?, ?)";
 			PreparedStatement ps = con.prepareStatement(query);
 
 			ps.setString(1,parseContent(myContent));
 			ps.setString(2, myUser);
 			ps.setTimestamp(3, timestamp);
-			ps.setString(4, fileaudio);
-			ps.setInt(5, id);
+			ps.setInt(4, id);
 
 			createThread(ps);
 			//ps.executeUpdate();
@@ -81,7 +79,29 @@ public class DBManager {
 		}catch(Exception ex) {
 			System.out.println("Error: " +ex);
 		} 
+		
+		System.out.println("Timestamp to string: "+ timestamp.toString());
 		return getId(timestamp.toString());
+	}
+	
+	public void updateAudioPath(int myId){
+		
+		String fileaudio = "res/conv"+myId+".mp3";
+		try
+		{
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE frase SET rec_file = ? WHERE id = ?");
+
+			ps.setString(1,fileaudio);
+			ps.setLong(2,myId);
+
+			//ps.executeUpdate();
+			createThread(ps);
+
+			System.out.println("Aggiornati i sentimenti");
+		}catch (SQLException ex){
+			System.out.println("Error path: " +ex);
+		}
 	}
 
 	private int getId(String myTimestamp) {
@@ -89,6 +109,7 @@ public class DBManager {
 		int result = 0; 
 		myTimestamp = myTimestamp.substring(0, 19);
 
+		System.out.println(myTimestamp);
 		try{
 			query = "SELECT id FROM frase WHERE timestamp = '"+myTimestamp+"'";
 
@@ -97,7 +118,7 @@ public class DBManager {
 				result = rs.getInt(1);
 			}
 		}catch(Exception ex) {
-			System.out.println("Error: " +ex);
+			System.out.println("Errores: " +ex);
 		}
 		System.out.println("ID:" +result);
 		return result;
@@ -119,7 +140,7 @@ public class DBManager {
 
 			System.out.println("Values inserted into DB");
 		}catch(Exception ex) {
-			System.out.println("Error: " +ex);
+			System.out.println("Error qua: " +ex);
 		} 
 	}
 
@@ -197,7 +218,7 @@ public class DBManager {
 			System.out.println("Aggiornate le emozioni");
 
 		}catch (SQLException ex){
-			System.out.println("Error: " +ex);
+			System.out.println("Error emozioni: " +ex);
 		}
 
 	}

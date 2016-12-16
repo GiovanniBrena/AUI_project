@@ -26,6 +26,7 @@ public class VoiceListener {
 	private DBManager db;
 
 	protected int idTupla;
+	protected int idResp;
 
 	public static VoiceListener getInstance(){
 		if(instance==null) {instance = new VoiceListener();}
@@ -134,6 +135,7 @@ public class VoiceListener {
 							switch(mode) {	
 							case REPEATER: {
 								String audioUrl = createAudioUrl(idTupla);
+								db.updateAudioPath(idTupla);
 								// just repeat
 								File audioResponse = 
 										AudioFileManager.synthesiseAudioToFile(response.getResponse(), audioUrl);
@@ -147,11 +149,11 @@ public class VoiceListener {
 								App.print("ABI: " + ABIresponse);
 
 								// store ABI response into DB
-								db.postPhrase(ABIresponse, "ABIapi");
-
+								idResp = db.postPhrase(ABIresponse, "ABIapi");
+								db.updateAudioPath(idResp);
 								// read response
 								File audioResponse = 
-										AudioFileManager.synthesiseAudioToFile(ABIresponse, "res/conv.mp3");
+										AudioFileManager.synthesiseAudioToFile(ABIresponse, createAudioUrl(idResp));
 								Mp3Player.getInstance().playMp3File(audioResponse);
 								break;
 							}

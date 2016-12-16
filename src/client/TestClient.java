@@ -15,6 +15,8 @@ public class TestClient {
 	private static TestClient instance; 
 
 	private DBManager db;
+
+	private int idTupla;
 	  
 	  public static TestClient getInstance(){
 		  if(instance==null) { instance = new TestClient();}
@@ -72,10 +74,11 @@ public class TestClient {
 	      while ((lineread = bufferedreader.readLine()) != null){
 	        System.out.println("Received from Server: " + lineread);
 	        
-	        db.postPhrase(lineread, "Server");
+	        idTupla = db.postPhrase(lineread, "Server");
+	        db.updateAudioPath(idTupla);
 	        
 	        App.print("ABI: " + lineread);
-	        File audio = AudioFileManager.synthesiseAudioToFile(lineread, "res/rec.mp3");
+	        File audio = AudioFileManager.synthesiseAudioToFile(lineread, createAudioUrl(idTupla));
 	        Mp3Player.getInstance().playMp3File(audio);
 	        
 	      }
@@ -109,6 +112,11 @@ public class TestClient {
 		  if(printwriter==null) {return;}
 		  printwriter.println(text);
 	  }
+	  
+	  private String createAudioUrl(int idTupla) {
+			String myUrl = "res/conv"+idTupla+".mp3";
+			return myUrl;
+		}
 	  
 	  
 	}
