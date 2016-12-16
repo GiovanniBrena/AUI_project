@@ -113,7 +113,7 @@ public class VoiceListener {
 							// invalid recognition
 							if(response.getResponse()==null) { 
 								System.out.println("riconoscimento non valido");
-								App.face.think(false);
+								//App.face.think(false);
 								continue; 
 							}
 

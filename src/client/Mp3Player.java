@@ -32,7 +32,8 @@ public class Mp3Player {
 				line.open(decodedFormat);
 				byte[] data = new byte[4096];
 				// Start
-				App.face.speak(true);
+				App.faceSpeak(true);
+				WebApp.faceSpeak(true);
 				
 				line.start();
 				
@@ -41,7 +42,8 @@ public class Mp3Player {
 					line.write(data, 0, nBytesRead);
 				}
 				// Stop
-				App.face.speak(false);
+				App.faceSpeak(false);
+				WebApp.faceSpeak(false);
 				line.drain();
 				line.stop();
 				line.close();

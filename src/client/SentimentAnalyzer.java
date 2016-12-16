@@ -48,7 +48,7 @@ public class SentimentAnalyzer {
 				System.out.println("----------------------");
 				}
 				catch(NullPointerException e){
-					System.out.println("Alchemy: error while analyzing");
+					System.out.println("Alchemy: no results.");
 				}
 			}
 		};

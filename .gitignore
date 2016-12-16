@@ -19,3 +19,7 @@ res/conv0.mp3
 res/rec.mp3
 
 res/rec.mp3
+
+*.flac
+
+*.mp3

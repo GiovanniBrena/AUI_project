@@ -163,6 +163,10 @@ public class App extends Application {
         		alchemyCheckbox.setDisable(true);
         		isActive=true;
         		console.setText("");
+        		
+        		TestClient.getInstance().setServerUrl(ipField.getText());
+        		TestClient.getInstance().setServerPort(Integer.valueOf(portField.getText()));
+        		
         		VoiceListener.getInstance().startListening();
         		face.setFace(FaceState.mSmile);
         		face.anim();
@@ -217,11 +221,17 @@ public class App extends Application {
 	
 	}
 	
+	
+	public static void faceSpeak(boolean value) {
+		if(face!=null) { face.speak(value); }
+	}
+	
 	private void handleAlchemyCheckboxAction(ActionEvent e){
 		VoiceListener.getInstance().setUseSentiment(!VoiceListener.getInstance().isUsingSentiment());
 	}
 	
 	public static void print(String s){
+		if(console==null) {return;}
 		String newline = System.getProperty("line.separator");
 		console.appendText(newline+s);
 	}

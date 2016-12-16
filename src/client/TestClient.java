@@ -20,14 +20,20 @@ public class TestClient {
 		  if(instance==null) { instance = new TestClient();}
 		  return instance;
 	  }
-	  
+	 
 	  private TestClient(){}
 	  
+	  public void setServerUrl(String ip){
+		  serverurl = ip;
+	  }
+	  public void setServerPort(int port){
+		  serverport = port;
+	  }
 	  
 	  @SuppressWarnings("restriction")
 	public void startClient(){
-		  serverurl = App.ipField.getText();
-		  serverport = Integer.parseInt(App.portField.getText());
+		  //serverurl = App.ipField.getText();
+		  //serverport = Integer.parseInt(App.portField.getText());
 			connectionThread = new Thread() {
 			    public void run() {
 			    	init();
@@ -42,17 +48,6 @@ public class TestClient {
 		}
 	  
 	 
-	  /**  Instantiates an instance of the SimpleClient class and initilaizes it.
-	  
-	  public static void main(String[] args){
-	    TestClient client = new TestClient();
-	    client.init();
-	  }
-	 
-	  /**  Connects to the SimpleServer on port 8189 and sends a few demo lines
-	  *  to the server, and reads, displays the server reply,
-	  *  then issues a Bye command signaling the server to quit.
-	  */
 	  private void init(){
 	    Socket socket = null;    
 	    try{

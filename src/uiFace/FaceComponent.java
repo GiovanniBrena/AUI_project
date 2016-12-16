@@ -21,7 +21,7 @@ public class FaceComponent extends BrowserView {
 	public FaceComponent() {
 		super(browser);
         String currentDirectory = System.getProperty("user.dir");
-        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/index.html"));    
+        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/webResource/face/index.html"));    
         setFace(FaceState.mOoh);
 	}
 
