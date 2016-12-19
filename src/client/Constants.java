@@ -7,12 +7,12 @@ public class Constants {
 	public static final String WATSON_CONVERSATION_PSW = "P72KZKNXHTce";
 	public static final String WATSON_WORKSPACE_ID = "51b861e1-efdb-40a1-b9ca-19e44c83e4e7";
 	
-	public static final String WATSON_TRANSLATOR_USER = "eb2a93b6-e56e-4160-9d72-0e99f730f8b1";
-	public static final String WATSON_TRANSLATOR_PSW = "Df26taALLc3Y";
+	public static final String WATSON_TRANSLATOR_USER = "fd9544c7-c167-425e-89c0-994722cd51c9";
+	public static final String WATSON_TRANSLATOR_PSW = "qCNmKuevukSz";
 	
 	public static final String WATSON_ALCHEMY_KEY = "eeff34668d75b2dd9bd200c52242798a59847249";
 	
-	public static final String SERVER_URL = "192.168.1.4";
+	public static final String SERVER_URL = "192.168.1.7";
 	public static final int SERVER_PORT= 8189;
 	
 	}

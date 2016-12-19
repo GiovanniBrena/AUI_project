@@ -14,8 +14,8 @@ public class Translator {
 		
 		LanguageTranslator service = new LanguageTranslator();
 		service.setUsernameAndPassword(Constants.WATSON_TRANSLATOR_USER, Constants.WATSON_TRANSLATOR_PSW);
+		
 		TranslationResult translationResult=service.translate(input, Language.ITALIAN, Language.ENGLISH).execute();
-	
 		return translationResult.getTranslations().get(0).getTranslation();
 	}
 	

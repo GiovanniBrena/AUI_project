@@ -20,7 +20,7 @@ public class VoiceListener {
 		REPEATER, CONVERSATION, MANUAL
 	}
 	private Mode mode = Mode.REPEATER;
-	private boolean useSentiments = true;
+	private boolean useSentiments = false;
 
 	private Thread listeningThread;
 	private DBManager db;
@@ -107,6 +107,7 @@ public class VoiceListener {
 							System.out.println("Recording Complete!");
 							System.out.println("Recognizing...");
 
+						
 							// instantiate Google Recognizer and get response
 							Recognizer rec = new Recognizer(Recognizer.Languages.ITALIAN, Constants.GOOGLE_API_KEY);
 							GoogleResponse response = rec.getRecognizedDataForFlac(mic.getAudioFile(), 3);
@@ -118,7 +119,7 @@ public class VoiceListener {
 								continue; 
 							}
 
-							
+							AudioFileManager.saveUserRec(db.getMaxId(), mic);
 							
 							// store response into DB
 							idTupla = db.postPhrase(response.getResponse(), "Elderly");

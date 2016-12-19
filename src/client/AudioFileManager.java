@@ -1,11 +1,14 @@
 package client;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.synthesiser.Synthesiser;
 
 public class AudioFileManager {
@@ -64,6 +67,31 @@ public class AudioFileManager {
 
 			}
 		}
+	}
+	
+	public static void saveUserRec(int convId, Microphone mic) throws FileNotFoundException{
+		
+		
+		File f = mic.getAudioFile();
+		try {
+			InputStream is = new FileInputStream(f);
+			OutputStream outstream = new FileOutputStream(new File("res/convUserTest.flac"));
+			
+			byte[] buffer = new byte[4096];
+			int len;
+			while ((len = is.read(buffer)) > 0) {
+			    outstream.write(buffer, 0, len);
+			}
+			outstream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+//		System.out.println("Saving user rec.");
+//		File rec = new File("res/convUser"+convId+".mp3");
+//		rec = mic.getAudioFile();
+//		System.out.println("User rec saved.");
 	}
 
 }

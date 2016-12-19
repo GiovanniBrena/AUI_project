@@ -1,6 +1,4 @@
 package uiFace;
-import java.util.List;
-import java.util.Map;
 
 import client.TestClient;
 import client.VoiceListener;

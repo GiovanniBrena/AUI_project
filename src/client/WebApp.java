@@ -1,25 +1,15 @@
 package client;
 
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ChangeListener;
 
-import com.mysql.fabric.xmlrpc.Client;
 import com.teamdev.jxbrowser.chromium.BrowserCore;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
 
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.*;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.stage.Stage;
-import uiFace.FaceComponent;
 import uiFace.FaceComponent.FaceState;
 import uiFace.UIBrowserComponent;
-import javafx.event.*;
 
 
 

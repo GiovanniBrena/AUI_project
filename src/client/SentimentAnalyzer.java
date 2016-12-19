@@ -13,18 +13,22 @@ public class SentimentAnalyzer {
 	
 	public static void analyzeString(String input, int id){
 		
+		System.out.println(input);
 		Thread analyzerThread = new Thread() {
 			
 			public void run(){
-				try{
+				
 				String inputENG=Translator.translateString(input);
 				Frase temp=Alchemy.sendRequestReturnFrase(inputENG);
 				temp.setFraseOriginale(input);
+				
+				System.out.println(inputENG);
 				
 				DocumentSentiment sentiment =  temp.getSentiment();
 				DocumentEmotion emotions = temp.getEmotion();
 				
 				SentimentType sentimentType =  sentiment.getSentiment().getType();
+				System.out.println("prov: "+sentimentType.toString());
 				Double sentimentScore = sentiment.getSentiment().getScore().doubleValue();
 				
 				Double angerValue = emotions.getEmotion().getAnger().doubleValue();
@@ -46,10 +50,8 @@ public class SentimentAnalyzer {
 				System.out.println("Joy: " + joyValue);
 				System.out.println("Sadness: " + sadnessValue);
 				System.out.println("----------------------");
-				}
-				catch(NullPointerException e){
-					System.out.println("Alchemy: no results.");
-				}
+				
+				
 			}
 		};
 		
