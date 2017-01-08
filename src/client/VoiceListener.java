@@ -74,8 +74,9 @@ public class VoiceListener {
 
 				// open microphone listening
 				mic = new MicrophoneAnalyzer(FLACFileWriter.FLAC);
-				mic.setAudioFile(new File("AudioTestNow.flac"));
+				
 				System.out.println("ACTIVATING MICROPHONE");
+				int countMic = 0;
 
 				/* ---- END INITIALIZATION ---- */
 
@@ -84,6 +85,8 @@ public class VoiceListener {
 				/* ---- LISTENING LOOP ---- */
 
 				while(true){
+					countMic++;
+					mic.setAudioFile(new File("UserRec"+countMic+".flac"));
 					mic.open();
 					// get current volume
 					int volume = mic.getAudioVolume();
@@ -100,18 +103,21 @@ public class VoiceListener {
 								Thread.sleep(1000);
 							}
 							while(mic.getAudioVolume() > NOISE_THRESHOLD);
-
+							mic.close(); //chiudo il microfono appena finito di registrare
 							// finish recording
 							//App.face.think(true);
 
 							System.out.println("Recording Complete!");
 							System.out.println("Recognizing...");
 
+							
+							
 						
 							// instantiate Google Recognizer and get response
 							Recognizer rec = new Recognizer(Recognizer.Languages.ITALIAN, Constants.GOOGLE_API_KEY);
 							GoogleResponse response = rec.getRecognizedDataForFlac(mic.getAudioFile(), 3);
 
+							
 							// invalid recognition
 							if(response.getResponse()==null) { 
 								System.out.println("riconoscimento non valido");
@@ -119,10 +125,14 @@ public class VoiceListener {
 								continue; 
 							}
 
-							AudioFileManager.saveUserRec(db.getMaxId(), mic);
+							
 							
 							// store response into DB
 							idTupla = db.postPhrase(response.getResponse(), "Elderly");
+							
+							//save audio 
+							AudioFileManager.saveUserRec(idTupla, mic);
+							
 							//Displays output in Console
 							displayResponse(response);
 							App.print("User: " + response.getResponse());
@@ -175,7 +185,7 @@ public class VoiceListener {
 						}
 						finally{
 							db.updateOraFine();
-							mic.close();//Makes sure microphone closes on exit.
+							//mic.close();//Makes sure microphone closes on exit.
 						}
 					}
 				}

@@ -71,11 +71,11 @@ public class AudioFileManager {
 	
 	public static void saveUserRec(int convId, Microphone mic) throws FileNotFoundException{
 		
-		
+		System.out.println("Saving user rec.");
 		File f = mic.getAudioFile();
 		try {
 			InputStream is = new FileInputStream(f);
-			OutputStream outstream = new FileOutputStream(new File("res/convUserTest.flac"));
+			OutputStream outstream = new FileOutputStream(new File("res/convUser"+convId+".flac")); //funziona anche mettendo .mp3 ma non con il mac 
 			
 			byte[] buffer = new byte[4096];
 			int len;
@@ -91,7 +91,9 @@ public class AudioFileManager {
 //		System.out.println("Saving user rec.");
 //		File rec = new File("res/convUser"+convId+".mp3");
 //		rec = mic.getAudioFile();
-//		System.out.println("User rec saved.");
+		
+		
+		System.out.println("User rec saved.");
 	}
 
 }

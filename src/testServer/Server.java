@@ -98,7 +98,7 @@ public class Server extends Application {
 	      printwriter = new PrintWriter(socket.getOutputStream(),true);
 	 
 	      String datetimestring = (Calendar.getInstance()).getTime().toString();
-	      printwriter.println("Benvenuto in ABI modalità manuale.");
+	      printwriter.println("Buongiorno Antonio, come stai?");
 	      
 	      hasClient=true;
 	      drawStateIcon();
