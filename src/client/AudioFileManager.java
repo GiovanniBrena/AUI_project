@@ -75,7 +75,7 @@ public class AudioFileManager {
 		File f = mic.getAudioFile();
 		try {
 			InputStream is = new FileInputStream(f);
-			OutputStream outstream = new FileOutputStream(new File("res/convUser"+convId+".flac")); //funziona anche mettendo .mp3 ma non con il mac 
+			OutputStream outstream = new FileOutputStream(new File("res/conv"+convId+".mp3")); //funziona anche mettendo .mp3 ma non con il mac 
 			
 			byte[] buffer = new byte[4096];
 			int len;
@@ -84,7 +84,7 @@ public class AudioFileManager {
 			}
 			outstream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error: " +e);
 			e.printStackTrace();
 		}
 

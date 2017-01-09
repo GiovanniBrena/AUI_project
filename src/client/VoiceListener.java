@@ -107,10 +107,8 @@ public class VoiceListener {
 							// finish recording
 							//App.face.think(true);
 
-							System.out.println("Recording Complete!");
-							System.out.println("Recognizing...");
+							System.out.println("Recording Complete! Recognizing...");
 
-							
 							
 						
 							// instantiate Google Recognizer and get response
@@ -120,14 +118,14 @@ public class VoiceListener {
 							
 							// invalid recognition
 							if(response.getResponse()==null) { 
-								System.out.println("riconoscimento non valido");
+								System.out.println("Riconoscimento non valido");
 								//App.face.think(false);
 								continue; 
 							}
 
 							
 							
-							// store response into DB
+							//store response into DB
 							idTupla = db.postPhrase(response.getResponse(), "Elderly");
 							
 							//save audio 
@@ -170,6 +168,9 @@ public class VoiceListener {
 							}
 
 							case MANUAL: {
+								
+								db.updateAudioPath(idTupla);
+								
 								// just send text to server
 								TestClient.getInstance().sendToServer(response.getResponse());
 								break;
@@ -195,6 +196,11 @@ public class VoiceListener {
 
 			private String createAudioUrl(int idTupla) {
 				String myUrl = "res/conv"+idTupla+".mp3";
+				return myUrl;
+			}
+			
+			private String createElderlyAudioUrl(int idTupla) {
+				String myUrl = "res/convUser"+idTupla+".mp3";
 				return myUrl;
 			}
 

@@ -3,6 +3,8 @@ package client;
 import java.io.*;
 import java.net.*;
 
+import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
+
 import database.DBManager;
 
 public class TestClient {
