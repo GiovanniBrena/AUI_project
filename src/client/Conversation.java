@@ -18,10 +18,16 @@ public class Conversation {
 
 		MessageRequest newMessage;
 		if(context!=null) {
+			System.out.println("contesto: "+context.toString());
+			context.put("username", "sandro");
+			
+			System.out.println("contesto seconda volta: "+context.toString());
 		newMessage = new MessageRequest.Builder().
 				inputText(input).
 				context(context).
 				build();
+		
+		System.out.println("\n\n noi mandiamo:" +newMessage.toString());
 		}
 		else {
 			newMessage = new MessageRequest.Builder().
@@ -32,7 +38,7 @@ public class Conversation {
 		MessageResponse response = service.message(Constants.WATSON_WORKSPACE_ID, newMessage).execute();
 		context = response.getContext();
 		
-		//System.out.println(response);
+		System.out.println(response);
 		
 		return response.getText().get(0);
 	}
@@ -40,6 +46,7 @@ public class Conversation {
 	public static String initConversation() {
 		context = null;
 		String response = sendRequest("");
+		
 		//System.out.println(response);
 		return response;
 	}

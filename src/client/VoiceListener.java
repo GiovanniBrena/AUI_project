@@ -20,7 +20,7 @@ public class VoiceListener {
 		REPEATER, CONVERSATION, MANUAL
 	}
 	private Mode mode = Mode.REPEATER;
-	private boolean useSentiments = false;
+	private boolean useSentiments = true;
 
 	private Thread listeningThread;
 	private DBManager db;
