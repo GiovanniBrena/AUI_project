@@ -26,6 +26,7 @@ public class WebApp extends Application {
 
 	@Override
 	public void init() throws Exception {
+		
 	    // On Mac OS X Chromium engine must be initialized in non-UI thread.
 	    if (Environment.isMac()) {
 	        BrowserCore.initialize();

@@ -137,7 +137,7 @@ public class VoiceListener {
 
 							if(useSentiments) {
 								// start Sentiment Analysis
-								SentimentAnalyzer.analyzeString(response.getResponse(), idTupla);
+								//SentimentAnalyzer.analyzeString(response.getResponse(), idTupla);
 							}
 							
 							// switch by mode
