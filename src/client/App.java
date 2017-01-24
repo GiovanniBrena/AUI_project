@@ -26,7 +26,10 @@ public class App extends Application {
 	
 	public static FaceComponent face;
 	
+	
+	
 	boolean isActive = false; 
+	static boolean isUIActive = false;
 	static TextArea console;
 	static TextField ipField;
 	static TextField portField;
@@ -46,7 +49,7 @@ public class App extends Application {
 	@SuppressWarnings({"unchecked" })
 	@Override
 	public void start(Stage primaryStage) {
-
+	boolean isUIActive = false;
 	//The primaryStage is the top-level container
 	primaryStage.setTitle("ABI test");
 
@@ -86,7 +89,8 @@ public class App extends Application {
             	ipField.setDisable(true);
                 portField.setDisable(true);
             }
-            else if(group.getSelectedToggle()==rb3) { 
+            else if(group.getSelectedToggle()==rb3) {
+            	
             	VoiceListener.getInstance().setMode(VoiceListener.Mode.MANUAL);
             	ipField.setDisable(false);
                 portField.setDisable(false);
@@ -224,6 +228,10 @@ public class App extends Application {
 	
 	public static void faceSpeak(boolean value) {
 		if(face!=null) { face.speak(value); }
+	}
+	
+	public static void faceAnim(FaceComponent.FaceState m) {
+		if(face!=null) { face.setFace(m);face.anim(); }
 	}
 	
 	private void handleAlchemyCheckboxAction(ActionEvent e){

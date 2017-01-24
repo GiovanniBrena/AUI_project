@@ -86,6 +86,8 @@ public class TestClient {
 	        	
 	        	String[] emotion=lineread.split(":");
 	        	System.out.println("faccia da fare:"+emotion[1]);
+	        	if(WebApp.isUIActive)WebApp.setFace(returnFaceState(emotion[1]));//webAppInterface
+	        	else if(App.isUIActive)App.faceAnim(returnFaceState(emotion[1]));//App interface
 	        	
 	        	
 	        }
