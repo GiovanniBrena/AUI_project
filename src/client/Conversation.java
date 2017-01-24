@@ -33,12 +33,13 @@ public class Conversation {
 		service.setDefaultHeaders(headers);
 		
 		*/
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.properties");
-		System.out.println(inputStream.toString());
+	
+		
 		MessageRequest newMessage;
 		if(context!=null) {
 			System.out.println("contesto: "+context.toString());
 			context.put("customVariable", ContextManager.customVariable);
+			
 			
 			newMessage = new MessageRequest.Builder().
 				inputText(input).
@@ -52,6 +53,7 @@ public class Conversation {
 			context=(new HashMap<String, Object>());
 			newMessage = new MessageRequest.Builder().
 					inputText(input).
+					
 					context(context).
 					build();
 			newMessage.context().put("username", "Sandro");

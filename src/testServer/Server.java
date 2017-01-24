@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Calendar;
 
+import javax.swing.AbstractButton;
+
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 import javafx.application.Application;
@@ -53,7 +55,12 @@ public class Server extends Application {
 			serverThread = new Thread() {
 			    public void run() {
 			    	
-			    	initServer();
+			    	try {
+						initServer();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			    }
 			};
 			serverThread.start();
@@ -69,17 +76,22 @@ public class Server extends Application {
 		
 		
 	  /**  Sets up a ServerSocket and listens on port 8189.
+	 * @throws Exception 
 	  */
-	  private void initServer(){
+	  private void initServer() throws Exception{
 	    ServerSocket serversocket = null;
 	    Socket socket = null;
 	    try{
 	      //establish a server socket monitoring port 8189 
 	      //port 8189 is not used by any services
 	      serversocket = new ServerSocket(8189);
+	     
 	      System.out.println("Listening on port 8189");
 	      
 	      print("Server Active");
+	     
+	      print("IP of the server if on same network:"+Inet4Address.getLocalHost().getHostAddress());
+	      print("IP of the server from external network:"+IpChecker.getIp());
 	      print("Waiting connections on port 8189");
 	      
 	      isRunning = true;
@@ -192,6 +204,10 @@ public class Server extends Application {
 		        }
 		    });
 		    
+		    
+		    
+		    
+		    
 		    VBox vbox2 = new VBox();
 		    vbox2.setPadding(new Insets(10));
 		    vbox2.setSpacing(8);
@@ -213,6 +229,7 @@ public class Server extends Application {
 		        @Override
 		        public void handle(Event actionEvent) {
 		        	if(isRunning&&hasClient) {
+		        		System.out.println("sto scrivendo del text");
 		        		printwriter.println(inputField.getText());
 		        		print("SERVER: " + inputField.getText());
 		        		inputField.setText("");
@@ -228,10 +245,70 @@ public class Server extends Application {
 		    vbox2.setAlignment(Pos.TOP_RIGHT);
 		  
 		    
+		 
+		    
+		    
+		    
+		   
+		    
+		    
+		    
+		    
+		    /*RADIO BUTTON EMOTION*/  
+		    VBox vbox3 = new VBox();
+		    vbox3.setPadding(new Insets(10));
+		    vbox3.setSpacing(10);
+		    Text title3 = new Text("FACE EMOTION");
+		    final ToggleGroup group = new ToggleGroup();
+		    
+		    
+		    RadioButton rb1 = new RadioButton("Normal");
+		    rb1.setToggleGroup(group);
+		    rb1.setSelected(true);
+
+		    RadioButton rb2 = new RadioButton("Happy");
+		    rb2.setToggleGroup(group);
+		     
+		    RadioButton rb3 = new RadioButton("SuperHappy");
+		    rb3.setToggleGroup(group);
+		    
+		    RadioButton rb4 = new RadioButton("Sad");
+		    rb4.setToggleGroup(group);
+		    
+		    RadioButton rb5 = new RadioButton("Ooh");
+		    rb5.setToggleGroup(group);
+		    
+
+		    Button sendButtonEmotion = new Button("Send_Face");
+		    sendButtonEmotion.setOnAction(new EventHandler() {
+		        @Override
+		        public void handle(Event actionEvent) {
+		        	
+		        	if(isRunning&&hasClient) {
+		        		RadioButton button=(RadioButton) group.getSelectedToggle();
+		        		
+		        		printwriter.println("emotion:"+button.getText());
+		        		print("SERVER: manda face"+button.getText());
+		        		inputField.setText("");
+		        	}
+		        }
+		    });
+		    vbox3.getChildren().add(title3);
+		    vbox3.getChildren().add(rb1);
+		    vbox3.getChildren().add(rb2);
+		    vbox3.getChildren().add(rb3);
+		    vbox3.getChildren().add(rb4);
+		    vbox3.getChildren().add(rb5);
+		    vbox3.getChildren().add(sendButtonEmotion);
+		  
+		    
+		    vbox3.setAlignment(Pos.TOP_LEFT);
+		    
+		    
 		    componentLayout.setLeft(vbox);
 		    componentLayout.setCenter(vbox2);
+		    componentLayout.setRight(vbox3);
 		    componentLayout.setBottom(startListening);
-		    
 		    
 			//Add the BorderPane to the Scene
 			Scene appScene = new Scene(componentLayout,800,500);

@@ -5,7 +5,7 @@ import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
 import com.darkprograms.speech.recognizer.GoogleResponse;
 import com.darkprograms.speech.recognizer.Recognizer;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
-
+import uiFace.FaceComponent;
 import client.TestClient;
 import database.DBManager;
 
@@ -22,6 +22,9 @@ public class VoiceListener {
 	private Mode mode = Mode.REPEATER;
 	private boolean useSentiments = true;
 
+	
+	
+	
 	private Thread listeningThread;
 	private DBManager db;
 
@@ -32,6 +35,7 @@ public class VoiceListener {
 		if(instance==null) {instance = new VoiceListener();}
 		return instance;
 	}
+
 
 	public void setMode(Mode m) {mode = m;}
 	public void setUseSentiment(boolean value) {useSentiments = value;}
@@ -192,7 +196,6 @@ public class VoiceListener {
 				}
 				/* ---- END LISTENING LOOP ---- */
 			}
-
 
 			private String createAudioUrl(int idTupla) {
 				String myUrl = "res/conv"+idTupla+".mp3";

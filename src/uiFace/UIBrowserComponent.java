@@ -41,7 +41,8 @@ public class UIBrowserComponent extends BrowserView {
 	public UIBrowserComponent() {
 		super(browser);
         String currentDirectory = System.getProperty("user.dir");
-        browser.loadURL(("file:///"+currentDirectory+"/res/UI/abi_UI.html"));    
+        browser.loadURL(("file:///"+currentDirectory+"/src/uiFace/uiWeb/webAppResource/ABI_UI.html"));   
+        
         document = browser.getDocument();
         
         browser.addLoadListener(new LoadAdapter() {

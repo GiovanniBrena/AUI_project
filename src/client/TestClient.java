@@ -6,6 +6,8 @@ import java.net.*;
 import com.darkprograms.speech.microphone.MicrophoneAnalyzer;
 
 import database.DBManager;
+import uiFace.FaceComponent;
+import uiFace.FaceComponent.FaceState;
 
 public class TestClient {
 	
@@ -20,6 +22,7 @@ public class TestClient {
 
 	private int idTupla;
 	  
+	
 	  public static TestClient getInstance(){
 		  if(instance==null) { instance = new TestClient();}
 		  return instance;
@@ -36,6 +39,7 @@ public class TestClient {
 	  
 	  @SuppressWarnings("restriction")
 	public void startClient(){
+		
 		  //serverurl = App.ipField.getText();
 		  //serverport = Integer.parseInt(App.portField.getText());
 			connectionThread = new Thread() {
@@ -74,7 +78,20 @@ public class TestClient {
 	      //printwriter.println("Bye");
 	      String lineread = "";
 	      while ((lineread = bufferedreader.readLine()) != null){
+	    	
 	        System.out.println("Received from Server: " + lineread);
+	        
+	        
+	        if(lineread.startsWith("emotion:")){
+	        	
+	        	String[] emotion=lineread.split(":");
+	        	System.out.println("faccia da fare:"+emotion[1]);
+	        	
+	        	
+	        }
+	        else{
+	        
+	        
 	        
 	        idTupla = db.postPhrase(lineread, "Server");
 	        db.updateAudioPath(idTupla);
@@ -82,6 +99,7 @@ public class TestClient {
 	        App.print("ABI: " + lineread);
 	        File audio = AudioFileManager.synthesiseAudioToFile(lineread, createAudioUrl(idTupla));
 	        Mp3Player.getInstance().playMp3File(audio);
+	        }
 	        
 	      }
 	      System.out.println("Closing connection.");
@@ -119,6 +137,22 @@ public class TestClient {
 			String myUrl = "res/conv"+idTupla+".mp3";
 			return myUrl;
 		}
+	  
+	 private FaceComponent.FaceState returnFaceState(String received){
+		 switch (received) {
+		case "Normal":return FaceState.mNormal;
+		case "Happy":return FaceState.mSmile;
+		case "SuperHappy":return FaceState.mBigSmile;
+		case "Sad":return FaceState.mSad;
+		case "Ooh":return FaceState.mOoh;
+			
+			
+
+		default:return FaceState.mNormal;
+			
+		}
+	 }
+	  
 	  
 	  
 	}
