@@ -30,7 +30,7 @@ public class ContextManager {
 		
 		
 		customVariable=new JsonObject();
-		if(FeedRetriever.getFeed(0)!=null)customVariable.addProperty( "news",FeedRetriever.getFeed(0));
+		
 		
 		customVariable.addProperty("sentiment",fraseAnalizzata.getSentiment().getSentiment().getType().toString());
 		for (int i = 0; i < fraseAnalizzata.getEntitiesAlchemy().size(); i++) {

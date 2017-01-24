@@ -37,7 +37,7 @@ public class Conversation {
 		
 		MessageRequest newMessage;
 		if(context!=null) {
-			System.out.println("contesto: "+context.toString());
+			//System.out.println("contesto: "+context.toString());
 			context.put("customVariable", ContextManager.customVariable);
 			
 			
@@ -47,7 +47,7 @@ public class Conversation {
 			
 				build();
 		
-		System.out.println("\n\n noi mandiamo:" +newMessage.toString());
+		//System.out.println("\n\n noi mandiamo:" +newMessage.toString());
 		}
 		else {
 			context=(new HashMap<String, Object>());
